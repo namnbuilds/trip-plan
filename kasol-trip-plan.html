@@ -364,7 +364,7 @@
 <section id="itinerarySection">
   <div class="section-head">
     <span class="kicker">Compare</span>
-    <h2>Day by day, side by side</h2>
+    <h2>Trip options</h2>
     <p>Pick a whole route to start from, then override any single day if you want to mix and match.</p>
   </div>
   <div class="quickpick-row" id="quickPicks"></div>
@@ -416,6 +416,9 @@
   "use strict";
 
   var STORAGE_KEY = "parvati-trip-plan-v1";
+
+  // transient map of current image index per place uid (not persisted)
+  var placeImageIndex = {};
 
   var OPTIONS = [
     {key:1, name:"Café & Village Hop", place:"Kasol + Tosh", vibe:"Relaxed pace", color:"#4C8C8B"},
@@ -494,28 +497,28 @@
 
   var PLACES = {
     kasol:{ label:"Kasol", stays:[
-        {name:"Moksha Riverside Resort & Spa", rating:4.4, reviews:1965, note:"Spa resort right on the Parvati River; spacious rooms with mountain views."},
+        {name:"Moksha Riverside Resort & Spa", rating:4.4, reviews:1965, note:"Spa resort right on the Parvati River; spacious rooms with mountain views.", images:["https://upload.wikimedia.org/wikipedia/commons/2/2d/Kasol_river_view.jpg"]},
         {name:"Royal Castle Kasol (SOHO Kasol)", rating:4.7, reviews:2414, note:"River-view rooms, in-house bar & restaurant, occasional live music."},
         {name:"The Hillside Kasol", rating:4.7, reviews:811, note:"Hilltop perch with 360° valley views — expect a short uphill walk in."},
         {name:"The Hosteller Kasol, Riverside", rating:4.8, reviews:3942, note:"Budget-friendly hostel right on the riverbank, lively common areas."}
       ], eats:[
-        {name:"The Evergreen", rating:4.3, reviews:5998, note:"Kasol's best-known Israeli/breakfast café; indoor and riverside outdoor seating."},
+        {name:"The Evergreen", rating:4.3, reviews:5998, note:"Kasol's best-known Israeli/breakfast café; indoor and riverside outdoor seating.", images:["https://upload.wikimedia.org/wikipedia/commons/2/2d/Kasol_river_view.jpg"]},
         {name:"Offlimits Coffee Kasol", rating:4.4, reviews:2932, note:"Riverside coffee spot tucked just off the main market."},
         {name:"Bistro Nirvana Kasol", rating:4.9, reviews:363, note:"Cozy all-day menu at the Zostel — veg, vegan and non-veg options."},
         {name:"Chill Out Cafe, Chalal", rating:5.0, reviews:28, note:"Quiet riverside thali spot just across the Chalal suspension bridge."}
       ]},
     tosh:{ label:"Tosh", stays:[
-        {name:"Vigyan Guest House", rating:5.0, reviews:115, note:"Family-run homestay with a big open balcony and home-cooked meals."},
+        {name:"Vigyan Guest House", rating:5.0, reviews:115, note:"Family-run homestay with a big open balcony and home-cooked meals.", images:["https://upload.wikimedia.org/wikipedia/commons/6/69/Tosh_Village.jpg"]},
         {name:"Rockstar Stay and Cafe", rating:4.9, reviews:57, note:"Snow-peak views right from the room and a genuinely warm host."},
         {name:"Aman Resort at Tosh", rating:4.9, reviews:167, note:"Riverside cottages, often called one of the best-located stays in the village."},
         {name:"StonedAge Café & Inn", rating:4.5, reviews:293, note:"Near Tosh waterfall; A-frame lofts and a well-loved kitchen."}
       ], eats:[
-        {name:"Pink Floyd Cafe", rating:4.1, reviews:724, note:"Tosh's iconic viewpoint café — a short trek up and a wait for a table."},
+        {name:"Pink Floyd Cafe", rating:4.1, reviews:724, note:"Tosh's iconic viewpoint café — a short trek up and a wait for a table.", images:["https://upload.wikimedia.org/wikipedia/commons/6/69/Tosh_Village.jpg"]},
         {name:"Om Parvati Cafe & Rooms", rating:4.9, reviews:75, note:"Wide menu, cozy ambience, attentive hosts."},
         {name:"Café Kush", rating:4.8, reviews:161, note:"A short uphill walk rewarded with terrific mountain views and hearty food."}
       ]},
     malana:{ label:"Malana", stays:[
-        {name:"AYOYA Malana Resort — Shiva Cafe", rating:4.3, reviews:666, note:"Closest stay to the entrance, about 2 minutes from the trailhead."},
+      {name:"AYOYA Malana Resort — Shiva Cafe", rating:4.3, reviews:666, note:"Closest stay to the entrance, about 2 minutes from the trailhead.", images:["https://upload.wikimedia.org/wikipedia/commons/1/1c/Malana_village.jpg"]},
         {name:"The MariZane Cottage", rating:4.9, reviews:48, note:"Steep climb, rewarded with valley views and a hands-on host."},
         {name:"Cafe Rudra (Guest House)", rating:4.3, reviews:22, note:"Perched at the top of the village with waterfall sounds and clean rooms."},
         {name:"Snow Moon Cafe & Resort", rating:4.6, reviews:41, note:"360° views and a well-known chill-out café scene."}
@@ -591,6 +594,7 @@
     var k = cellKey(rowId,optKey);
     return (state.textOverrides && state.textOverrides[k] !== undefined) ? state.textOverrides[k] : fallback;
   }
+  function esc(s){ var d=document.createElement('div'); d.textContent = s==null? '': s; return d.innerHTML; }
   function normalizeLabel(lbl){
     if(!lbl) return lbl;
     var l = lbl.toLowerCase();
@@ -632,118 +636,64 @@
     };
     wrap.appendChild(clearBtn);
   }
-
   // ---------- render: table ----------
   function renderTable(){
     var table = document.getElementById("itinTable");
+    var visibleOptions = OPTIONS.filter(function(o){ return (state.hiddenOptions||[]).indexOf(o.key) === -1; });
     var html = "<thead><tr><th>Day / Slot</th>";
-    OPTIONS.forEach(function(opt){
+    visibleOptions.forEach(function(opt){
       var nameVal = state.optionHeaderOverrides[opt.key+"-name"] || opt.name;
       var placeVal = state.optionHeaderOverrides[opt.key+"-place"] || (opt.place + ' · ' + opt.vibe);
       var colorVal = effectiveColor(opt.key) || opt.color;
       html += '<th class="opt-head">'
         + '<div class="opt-bar" style="background:'+colorVal+'"></div>'
         + '<div style="display:flex;align-items:center;gap:8px">'
-        + '<div class="opt-name" contenteditable="true" data-opt="'+opt.key+'" data-field="name">Option '+opt.key+' — '+nameVal+'</div>'
+        + '<div class="opt-name" contenteditable="true" data-opt="'+opt.key+'" data-field="name">Option '+opt.key+' — '+esc(nameVal)+'</div>'
         + '<input class="opt-color" type="color" data-opt="'+opt.key+'" value="'+colorVal+'">'
+        + '<button class="opt-del" data-opt="'+opt.key+'" title="Remove option">✕</button>'
         + '</div>'
-        + '<div class="opt-place" contenteditable="true" data-opt="'+opt.key+'" data-field="place">'+placeVal+'</div>'
+        + '<div class="opt-place" contenteditable="true" data-opt="'+opt.key+'" data-field="place">'+esc(placeVal)+'</div>'
         + '</th>';
     });
-    // add column control
     html += '<th style="width:92px;text-align:center;">'
       + '<button id="addOptionBtn" class="qp-btn">+ Add option</button>'
       + '</th>';
     html += "</tr></thead><tbody>";
 
     ITINERARY.forEach(function(group){
-      html += '<tr class="group-row"><td colspan="'+(OPTIONS.length+2)+'"><b>'+group.day+'</b>'+group.time+'</td></tr>';
+      html += '<tr class="group-row"><td colspan="'+(visibleOptions.length+2)+'"><b>'+group.day+'</b>'+group.time+'</td></tr>';
       var rows = (group.rows || []).slice();
       if(state.customRows && state.customRows[group.id]) rows = rows.concat(state.customRows[group.id]);
       rows.forEach(function(row){
+        if((state.hiddenRows||[]).indexOf(row.id)!==-1) return;
         var displayLabel = normalizeLabel(row.label) || row.label;
-        html += '<tr><td class="row-label"><span class="ic">'+row.ic+'</span>'+displayLabel+'</td>';
-        OPTIONS.forEach(function(opt, idx){
+        html += '<tr><td class="row-label"><span class="ic">'+row.ic+'</span>'+esc(displayLabel)
+          + ' <button class="row-del" data-row="'+row.id+'" title="Delete row">✕</button>'
+          + '</td>';
+        visibleOptions.forEach(function(opt, idx){
           var selected = state.rowSelections[row.id] === opt.key;
-          var borderColor = selected ? opt.color : "transparent";
-          var txt = getCellText(row.id, opt.key, row.text[idx]);
+          var colorVal = effectiveColor(opt.key) || opt.color;
+          var borderColor = selected ? colorVal : "transparent";
+          var txt = getCellText(row.id, opt.key, (row.text && row.text[idx]) ? row.text[idx] : '');
           var edited = state.textOverrides && state.textOverrides[cellKey(row.id,opt.key)] !== undefined;
           html += '<td class="opt-cell" data-row="'+row.id+'" data-opt="'+opt.key+'">'
             + '<div class="cell-wrap">'
-            + '<button class="cell-btn'+(selected?' selected':'')+'" '
-            + 'style="border-color:'+borderColor+(selected? ';background:#fff':'')+'" '
-            + 'data-row="'+row.id+'" data-opt="'+opt.key+'">'
-            + '<span class="check" style="'+(selected? 'background:'+opt.color+';border-color:'+opt.color : '')+'"></span>'
-            + txt + '</button>'
-            + '<button class="cell-edit" data-row="'+row.id+'" data-opt="'+opt.key+'">✎</button>'
+            + '<span class="check" data-row="'+row.id+'" data-opt="'+opt.key+'" style="display:inline-block;width:14px;height:14px;border-radius:50%;border:1.5px solid var(--line);margin-right:6px;vertical-align:-2px;'+(selected?('background:'+colorVal+';border-color:'+colorVal):'')+'"></span>'
+            + '<div class="cell-content" contenteditable="true" data-row="'+row.id+'" data-opt="'+opt.key+'">'+esc(txt)+'</div>'
             + (edited? '<div class="edited-indicator">edited</div>' : '')
             + '</div></td>';
         });
-        // empty cell for add-option column space
         html += '<td class="opt-cell"></td>';
         html += '</tr>';
       });
-      // add-row control
-      html += '<tr><td colspan="'+(OPTIONS.length+2)+'" style="padding:8px 12px;">'
+      html += '<tr><td colspan="'+(visibleOptions.length+2)+'" style="padding:8px 12px;">'
         + '<button class="qp-btn" data-group="'+group.id+'">+ Add row to '+group.day+'</button>'
         + '</td></tr>';
     });
     html += "</tbody>";
     table.innerHTML = html;
 
-    function openCellEditor(rowId, optKey){
-      var td = table.querySelector('.opt-cell[data-row="'+rowId+'"][data-opt="'+optKey+'"]');
-      if(!td) return;
-      var defaultText = '';
-      var groupRow = ITINERARY.reduce(function(acc,g){ return acc.concat(g.rows); },[]).filter(function(r){ return r.id===rowId; })[0];
-      // try to find fallback from original tables
-      if(groupRow){ var idx = 0; OPTIONS.forEach(function(o,i){ if(o.key===optKey) idx=i; }); defaultText = groupRow.text && groupRow.text[idx] ? groupRow.text[idx] : ''; }
-      var current = getCellText(rowId,optKey,defaultText);
-      td.innerHTML = '<div class="cell-edit-form">'
-        + '<textarea>'+current+'</textarea>'
-        + '<div class="cell-edit-actions">'
-        + '<button class="mini-btn save">Save</button>'
-        + '<button class="mini-btn cancel">Cancel</button>'
-        + '<button class="mini-btn reset">Reset</button>'
-        + '</div></div>';
-      td.querySelector('.save').onclick = function(){
-        var val = td.querySelector('textarea').value.trim();
-        if(!state.textOverrides) state.textOverrides = {};
-        state.textOverrides[cellKey(rowId,optKey)] = val;
-        saveState(); renderTable(); renderSummary();
-      };
-      td.querySelector('.cancel').onclick = function(){ renderTable(); };
-      td.querySelector('.reset').onclick = function(){ if(state.textOverrides) delete state.textOverrides[cellKey(rowId,optKey)]; saveState(); renderTable(); renderSummary(); };
-    }
-
-    // wire edit buttons
-    table.querySelectorAll('.cell-edit').forEach(function(btn){ btn.addEventListener('click', function(e){ e.stopPropagation(); openCellEditor(btn.getAttribute('data-row'), parseInt(btn.getAttribute('data-opt'),10)); }); });
-
-    // wire add-row buttons
-    table.querySelectorAll('button[data-group]').forEach(function(b){ b.addEventListener('click', function(){ var groupId = b.getAttribute('data-group');
-        var time = prompt('Time of day (Morning / Afternoon / Evening / Night). Use exactly: Morning, Afternoon / Evening, Night', 'Morning');
-        if(!time) return; if(['Morning','Afternoon / Evening','Night'].indexOf(time)===-1){ if(time==='Afternoon' || time==='Evening') time='Afternoon / Evening'; }
-        var label = prompt('Row label (short):', time);
-        if(!label) label = time;
-        var newRow = { id: groupId+'-custom-'+Date.now(), label: label, ic: time==='Morning'? '🌄' : (time==='Night'? '🌙' : '🌇'), text: [] };
-        // create default empty texts per option
-        for(var i=0;i<OPTIONS.length;i++) newRow.text.push('');
-        if(!state.customRows) state.customRows = {};
-        state.customRows[groupId] = state.customRows[groupId] || [];
-        state.customRows[groupId].push(newRow);
-        saveState(); renderTable(); renderSummary(); }); });
-
-    // wire add-option button
-    var addOpt = document.getElementById('addOptionBtn');
-    if(addOpt){ addOpt.addEventListener('click', function(){ var nm = prompt('New option name (e.g. Quiet & Slow)'); if(!nm) return; var place = prompt('Place / short description (e.g. Kasol + Tosh)');
-        var nextKey = Math.max.apply(null, OPTIONS.map(function(o){return o.key;})) + 1;
-        var opt = { key: nextKey, name: nm, place: place||'', vibe:'', color:'#888888' };
-        OPTIONS.push(opt);
-        state.customOptions = state.customOptions || [];
-        state.customOptions.push(opt);
-        saveState(); renderTable(); renderQuickPicks(); renderSummary(); }); }
-
-    // header editing listeners
+    // header listeners (name/place)
     table.querySelectorAll(".opt-name, .opt-place").forEach(function(el){
       el.addEventListener('blur', function(){
         var optKey = el.getAttribute('data-opt');
@@ -761,16 +711,22 @@
         saveState(); renderTable(); renderQuickPicks(); renderSummary();
       });
     });
+    table.querySelectorAll('.opt-del').forEach(function(b){ b.addEventListener('click', function(){ var k=parseInt(b.getAttribute('data-opt'),10); if(!confirm('Remove this option? You can add it back later.')) return; state.hiddenOptions = state.hiddenOptions || []; state.hiddenOptions.push(k); Object.keys(state.rowSelections||{}).forEach(function(r){ if(state.rowSelections[r]===k) delete state.rowSelections[r]; }); saveState(); renderTable(); renderQuickPicks(); renderSummary(); }); });
 
-    table.querySelectorAll(".cell-btn").forEach(function(btn){
-      btn.addEventListener("click", function(){
-        var rowId = btn.getAttribute("data-row");
-        var optKey = parseInt(btn.getAttribute("data-opt"), 10);
-        if(state.rowSelections[rowId] === optKey){ delete state.rowSelections[rowId]; }
-        else{ state.rowSelections[rowId] = optKey; }
-        saveState(); renderTable(); renderSummary();
-      });
-    });
+    // wire checks (select) and contenteditable save
+    table.querySelectorAll('.check').forEach(function(ch){ ch.addEventListener('click', function(e){ e.stopPropagation(); var rowId=ch.getAttribute('data-row'); var optKey=parseInt(ch.getAttribute('data-opt'),10); if(state.rowSelections[rowId]===optKey) delete state.rowSelections[rowId]; else state.rowSelections[rowId]=optKey; saveState(); renderTable(); renderSummary(); }); });
+    table.querySelectorAll('.cell-content').forEach(function(cc){ cc.addEventListener('blur', function(){ var rowId=cc.getAttribute('data-row'); var optKey=parseInt(cc.getAttribute('data-opt'),10); var v = cc.textContent.trim(); if(!state.textOverrides) state.textOverrides={}; state.textOverrides[cellKey(rowId,optKey)] = v; saveState(); renderSummary(); }); });
+
+    // add-row buttons
+    table.querySelectorAll('button[data-group]').forEach(function(b){ b.addEventListener('click', function(){ var groupId = b.getAttribute('data-group'); var time = prompt('Time of day (Morning / Afternoon / Evening / Night). Use exactly: Morning, Afternoon / Evening, Night', 'Morning'); if(!time) return; if(['Morning','Afternoon / Evening','Night'].indexOf(time)===-1){ if(time==='Afternoon' || time==='Evening') time='Afternoon / Evening'; } var label = prompt('Row label (short):', time); if(!label) label = time; var newRow = { id: groupId+'-custom-'+Date.now(), label: label, ic: time==='Morning'? '🌄' : (time==='Night'? '🌙' : '🌇'), text: [] }; for(var i=0;i<OPTIONS.length;i++) newRow.text.push(''); if(!state.customRows) state.customRows={}; state.customRows[groupId]=state.customRows[groupId]||[]; state.customRows[groupId].push(newRow); saveState(); renderTable(); renderSummary(); }); });
+
+    // add-option
+    var addOpt = document.getElementById('addOptionBtn');
+    if(addOpt){ addOpt.addEventListener('click', function(){ var nm = prompt('New option name (e.g. Quiet & Slow)'); if(!nm) return; var place = prompt('Place / short description (e.g. Kasol + Tosh)'); var nextKey = Math.max.apply(null, OPTIONS.map(function(o){return o.key;})) + 1; var opt = { key: nextKey, name: nm, place: place||'', vibe:'', color:'#888888' }; OPTIONS.push(opt); state.customOptions = state.customOptions || []; state.customOptions.push(opt); // extend text arrays for existing rows
+        ITINERARY.forEach(function(g){ g.rows.forEach(function(r){ r.text = r.text || []; r.text.push(''); }); if(state.customRows && state.customRows[g.id]) state.customRows[g.id].forEach(function(cr){ cr.text = cr.text || []; cr.text.push(''); }); }); saveState(); renderTable(); renderQuickPicks(); renderSummary(); }); }
+
+    // delete-row
+    table.querySelectorAll('.row-del').forEach(function(b){ b.addEventListener('click', function(){ var rid=b.getAttribute('data-row'); if(!confirm('Delete this row?')) return; state.hiddenRows = state.hiddenRows || []; state.hiddenRows.push(rid); saveState(); renderTable(); renderSummary(); }); });
   }
 
   // ---------- render: places ----------
@@ -791,10 +747,20 @@
     var isFav = state.favorites.indexOf(uid) !== -1;
     var card = document.createElement("div");
     card.className = "place-card" + (isFav ? " fav" : "");
-    var thumb = BANNERS[loc] || '';
+    var images = (p.images && p.images.length) ? p.images.slice() : (BANNERS[loc] ? [BANNERS[loc]] : []);
+    var idx = placeImageIndex[uid] || 0;
+    if(idx < 0) idx = 0; if(idx >= images.length) idx = 0; placeImageIndex[uid] = idx;
+    var imgHtml = '';
+    if(images.length){
+      imgHtml = '<div class="place-thumb-wrap">'
+        + '<button class="img-prev" data-uid="'+uid+'">‹</button>'
+        + '<img class="place-thumb" src="'+images[idx]+'" alt="'+p.name+'" onerror="this.style.display=\'none\'">'
+        + '<button class="img-next" data-uid="'+uid+'">›</button>'
+        + '</div>';
+    }
     var mapLink = mapsUrl(p.name + ' ' + PLACES[loc].label + ' Parvati Valley');
     card.innerHTML = '<button class="fav-btn">'+(isFav?'★':'☆')+'</button>'
-      + (thumb ? ('<img class="place-thumb" src="'+thumb+'" alt="'+p.name+'" onerror="this.style.display=\'none\'">') : '')
+      + imgHtml
       + '<div class="place-name">'+p.name+'</div>'
       + (p.rating ? ('<div class="place-rating">★ '+p.rating.toFixed(1)+' · '+fmtReviews(p.reviews)+' reviews</div>') : '')
       + '<div class="place-note">'+p.note+'</div>'
@@ -804,6 +770,11 @@
       if(i === -1) state.favorites.push(uid); else state.favorites.splice(i,1);
       saveState(); renderPlaceCards(); renderSummary();
     };
+    // wire image prev/next
+    var prev = card.querySelector('.img-prev');
+    var next = card.querySelector('.img-next');
+    if(prev) prev.onclick = function(){ var u=this.getAttribute('data-uid'); var imgs = (p.images && p.images.length)?p.images:(BANNERS[loc]? [BANNERS[loc]]:[]); var cur = placeImageIndex[u]||0; cur = (cur-1+imgs.length)%imgs.length; placeImageIndex[u]=cur; renderPlaceCards(); };
+    if(next) next.onclick = function(){ var u=this.getAttribute('data-uid'); var imgs = (p.images && p.images.length)?p.images:(BANNERS[loc]? [BANNERS[loc]]:[]); var cur = placeImageIndex[u]||0; cur = (cur+1)%imgs.length; placeImageIndex[u]=cur; renderPlaceCards(); };
     return card;
   }
 
