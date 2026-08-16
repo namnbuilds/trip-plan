@@ -9,17 +9,23 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root{
-    --paper:#ECEFE6;
-    --paper-dim:#E1E5D9;
+    --paper:#EDF0E7;
+    --paper-dim:#E0E4D6;
     --ink:#1B241F;
-    --ink-soft:#54604F;
+    --ink-soft:#57624F;
     --pine:#1F3D33;
-    --pine-deep:#12241D;
+    --pine-deep:#0F201A;
     --saffron:#E3A73A;
     --river:#4C8C8B;
     --plum:#8B4B6B;
-    --line:#C7CFBC;
+    --moss:#5C7A4A;
+    --clay:#C1694F;
+    --slateblue:#3B5A73;
+    --line:#C9D1BE;
     --white:#FBFAF6;
+    --shadow-sm:0 1px 2px rgba(15,32,26,.06), 0 3px 10px rgba(15,32,26,.05);
+    --shadow-md:0 2px 4px rgba(15,32,26,.07), 0 10px 24px rgba(15,32,26,.08);
+    --radius-s:9px; --radius-m:14px; --radius-l:20px;
   }
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;}
@@ -32,63 +38,199 @@
   }
   h1,h2,h3{font-family:'Fraunces',serif;margin:0;}
   .mono{font-family:'IBM Plex Mono',monospace;}
+  button{font-family:inherit;}
 
   /* ---------- HERO ---------- */
   .hero{
     position:relative;
-    background:linear-gradient(180deg,var(--pine-deep) 0%,var(--pine) 100%);
+    background:radial-gradient(120% 140% at 10% -10%, #1c3b31 0%, var(--pine-deep) 60%);
     color:var(--white);
-    padding:34px 20px 0;
+    padding:38px 20px 0;
     overflow:hidden;
   }
   .hero-eyebrow{
     font-family:'IBM Plex Mono',monospace;
     font-size:11px;
-    letter-spacing:.14em;
+    letter-spacing:.16em;
     text-transform:uppercase;
     color:var(--saffron);
-    margin-bottom:10px;
+    margin-bottom:12px;
+    display:inline-block;
+    padding-bottom:6px;
+    border-bottom:1px solid rgba(227,167,58,.35);
   }
   .hero h1{
-    font-size:clamp(28px,7vw,40px);
+    font-size:clamp(30px,7.5vw,42px);
     font-weight:600;
-    line-height:1.08;
+    line-height:1.06;
     max-width:480px;
+    letter-spacing:-.01em;
   }
   .hero p.sub{
-    margin:10px 0 22px;
+    margin:12px 0 22px;
     font-size:15px;
-    color:#D4DED4;
-    max-width:420px;
-    line-height:1.5;
+    color:#CFE0D2;
+    max-width:440px;
+    line-height:1.55;
   }
   .stat-row{
     display:flex;
-    gap:18px;
+    gap:20px;
     flex-wrap:wrap;
-    padding-bottom:18px;
+    padding-bottom:20px;
     font-family:'IBM Plex Mono',monospace;
     font-size:12px;
-    color:#CFE0D6;
+    color:#A9C2AE;
   }
-  .stat-row b{color:var(--white);font-size:13px;}
+  .stat-row b{color:var(--white);font-size:13px;font-weight:500;}
   .ridge{display:block;width:100%;height:auto;}
-  .ridge-wrap{margin-top:8px;}
+  .ridge-wrap{margin-top:10px;}
 
   /* ---------- SECTION SHELL ---------- */
-  section{padding:34px 18px 6px;max-width:920px;margin:0 auto;}
-  .section-head{margin-bottom:16px;}
+  section{padding:38px 18px 6px;max-width:940px;margin:0 auto;}
+  .section-head{margin-bottom:18px;}
   .section-head .kicker{
     font-family:'IBM Plex Mono',monospace;
     font-size:11px;
-    letter-spacing:.12em;
+    letter-spacing:.13em;
     text-transform:uppercase;
     color:var(--river);
-    margin-bottom:6px;
+    margin-bottom:7px;
     display:block;
   }
-  .section-head h2{font-size:22px;font-weight:600;}
-  .section-head p{font-size:14px;color:var(--ink-soft);margin-top:6px;line-height:1.5;}
+  .section-head h2{font-size:23px;font-weight:600;letter-spacing:-.01em;}
+  .section-head p{font-size:14px;color:var(--ink-soft);margin-top:7px;line-height:1.55;max-width:60ch;}
+
+  /* ---------- PROGRESS ---------- */
+  .progress-card{
+    background:var(--white);
+    border:1px solid var(--line);
+    border-radius:var(--radius-m);
+    box-shadow:var(--shadow-sm);
+    padding:14px 16px;
+    margin-bottom:16px;
+    display:flex;
+    align-items:center;
+    gap:14px;
+    flex-wrap:wrap;
+  }
+  .progress-text{font-size:12.5px;font-weight:600;color:var(--ink);white-space:nowrap;}
+  .progress-bar{flex:1 1 120px;height:7px;background:var(--paper-dim);border-radius:999px;overflow:hidden;min-width:100px;}
+  .progress-fill{height:100%;background:linear-gradient(90deg,var(--river),var(--pine));border-radius:999px;transition:width .3s ease;}
+  .lean-chip{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px;
+    background:var(--paper);
+    color:var(--ink-soft);
+    padding:5px 10px;
+    border-radius:999px;
+    white-space:nowrap;
+  }
+  .lean-chip b{color:var(--ink);}
+
+  /* ---------- DAY JUMP ---------- */
+  .day-jump{display:flex;gap:7px;overflow-x:auto;margin-bottom:16px;padding-bottom:2px;}
+  .day-jump-btn{
+    flex:0 0 auto;
+    border:1px solid var(--line);
+    background:var(--white);
+    color:var(--ink-soft);
+    font-size:12px;
+    font-weight:600;
+    padding:7px 13px;
+    border-radius:999px;
+    cursor:pointer;
+    font-family:'IBM Plex Mono',monospace;
+  }
+  .day-jump-btn:hover{border-color:var(--pine);color:var(--pine);}
+
+  /* ---------- MANAGE OPTIONS ---------- */
+  details.manage-box{
+    background:var(--white);
+    border:1px solid var(--line);
+    border-radius:var(--radius-m);
+    box-shadow:var(--shadow-sm);
+    padding:2px 16px;
+    margin-bottom:16px;
+  }
+  details.manage-box summary{
+    padding:13px 0;
+    font-size:13.5px;
+    font-weight:700;
+    cursor:pointer;
+    list-style:none;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    color:var(--ink);
+  }
+  details.manage-box summary::-webkit-details-marker{display:none;}
+  details.manage-box .arrow{font-size:12px;color:var(--ink-soft);transition:transform .15s ease;}
+  details.manage-box[open] .arrow{transform:rotate(90deg);}
+  .manage-body{padding:2px 0 16px;}
+  .manage-row{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding:8px 0;
+    border-top:1px solid var(--paper-dim);
+  }
+  .manage-row:first-child{border-top:none;}
+  .manage-inputs{flex:1;display:flex;flex-direction:column;gap:4px;min-width:0;}
+  .manage-inputs input{
+    border:1px solid transparent;
+    background:transparent;
+    font-family:'Inter',sans-serif;
+    color:var(--ink);
+    padding:3px 4px;
+    border-radius:5px;
+    width:100%;
+  }
+  .manage-inputs input.opt-name-input{font-weight:700;font-size:13.5px;}
+  .manage-inputs input.opt-place-input{font-size:11.5px;color:var(--ink-soft);}
+  .manage-inputs input:focus{outline:none;border-color:var(--saffron);background:var(--paper);}
+  .swatch-wrap{position:relative;flex:0 0 auto;}
+  .swatch-btn{
+    width:26px;height:26px;border-radius:50%;
+    border:2px solid var(--white);
+    box-shadow:0 0 0 1.5px var(--line);
+    cursor:pointer;
+  }
+  .swatch-popover{
+    position:absolute;top:32px;left:0;z-index:5;
+    background:var(--white);
+    border:1px solid var(--line);
+    border-radius:12px;
+    box-shadow:var(--shadow-md);
+    padding:8px;
+    display:flex;
+    gap:6px;
+  }
+  .swatch-opt{width:22px;height:22px;border-radius:50%;cursor:pointer;border:2px solid transparent;}
+  .swatch-opt:hover{border-color:var(--ink);}
+  .manage-del{
+    flex:0 0 auto;
+    width:24px;height:24px;
+    border:none;background:var(--paper-dim);
+    color:var(--ink-soft);
+    border-radius:50%;
+    font-size:11px;
+    cursor:pointer;
+  }
+  .manage-del.armed{background:var(--clay);color:var(--white);}
+  .add-option-btn{
+    width:100%;
+    border:1.5px dashed var(--line);
+    background:transparent;
+    color:var(--ink-soft);
+    font-size:13px;
+    font-weight:600;
+    padding:11px;
+    border-radius:var(--radius-s);
+    cursor:pointer;
+    margin-top:6px;
+  }
+  .add-option-btn:hover{border-color:var(--pine);color:var(--pine);}
 
   /* ---------- QUICK PICK ---------- */
   .quickpick-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:6px;}
@@ -97,7 +239,6 @@
     background:var(--white);
     border-radius:999px;
     padding:9px 14px;
-    font-family:'Inter',sans-serif;
     font-size:13px;
     font-weight:600;
     color:var(--ink);
@@ -105,52 +246,53 @@
     align-items:center;
     gap:7px;
     cursor:pointer;
+    transition:border-color .12s ease;
   }
+  .qp-btn:hover{border-color:var(--pine);}
   .qp-dot{width:9px;height:9px;border-radius:50%;display:inline-block;}
   .qp-clear{color:var(--ink-soft);border-style:dashed;}
 
   /* ---------- TABLE ---------- */
-  .table-hint{font-size:12px;color:var(--ink-soft);margin:10px 0 10px;font-family:'IBM Plex Mono',monospace;}
+  .table-hint{font-size:12px;color:var(--ink-soft);margin:12px 0 10px;font-family:'IBM Plex Mono',monospace;}
   .table-wrap{
     overflow-x:auto;
     border:1px solid var(--line);
-    border-radius:14px;
+    border-radius:var(--radius-m);
     background:var(--white);
+    box-shadow:var(--shadow-sm);
     -webkit-overflow-scrolling:touch;
   }
   table{border-collapse:collapse;width:100%;min-width:640px;}
   thead th{
     text-align:left;
-    padding:12px 12px;
-    font-family:'Inter',sans-serif;
+    padding:13px 12px;
     font-size:12.5px;
     background:var(--paper-dim);
     border-bottom:1px solid var(--line);
     position:sticky;top:0;
     z-index:2;
   }
-  thead th:first-child{
-    left:0;z-index:3;min-width:118px;
-  }
-  th.opt-head{min-width:168px;}
-  .opt-name{font-weight:700;font-size:13.5px;color:var(--ink);}
-  .opt-place{font-size:11px;color:var(--ink-soft);margin-top:2px;}
-  .opt-bar{height:3px;border-radius:2px;margin-bottom:8px;}
+  thead th:first-child{left:0;z-index:3;min-width:120px;}
+  th.opt-head{min-width:172px;}
+  .opt-name-display{font-weight:700;font-size:13.5px;color:var(--ink);}
+  .opt-place-display{font-size:11px;color:var(--ink-soft);margin-top:2px;}
+  .opt-bar{height:3px;border-radius:2px;margin-bottom:9px;}
 
   tr.group-row td{
     background:var(--pine);
     color:var(--white);
-    padding:9px 12px;
+    padding:10px 12px;
     font-family:'IBM Plex Mono',monospace;
     font-size:11.5px;
-    letter-spacing:.04em;
+    letter-spacing:.05em;
     text-transform:uppercase;
+    scroll-margin-top:14px;
   }
   tr.group-row td b{
     font-family:'Fraunces',serif;
     text-transform:none;
     letter-spacing:0;
-    font-size:14px;
+    font-size:14.5px;
     font-weight:600;
     display:block;
     margin-bottom:1px;
@@ -160,55 +302,71 @@
     position:sticky;left:0;
     background:var(--white);
     border-right:1px solid var(--line);
-    padding:10px 10px;
+    padding:10px 26px 10px 10px;
     font-size:12.5px;
     font-weight:600;
     color:var(--ink);
-    min-width:118px;
+    min-width:120px;
     vertical-align:top;
     z-index:1;
   }
+  .row-label-wrap{position:relative;}
   td.row-label .ic{font-size:15px;margin-right:5px;}
+  .row-del{
+    position:absolute;top:-2px;right:-20px;
+    width:18px;height:18px;border-radius:50%;
+    border:none;background:var(--paper-dim);color:var(--ink-soft);
+    font-size:10px;cursor:pointer;
+  }
+  .row-del.armed{background:var(--clay);color:var(--white);}
 
   td.opt-cell{
     padding:8px;
     border-bottom:1px solid var(--line);
     vertical-align:top;
-    min-width:168px;
+    min-width:172px;
   }
   tbody tr:not(.group-row) td.row-label{border-bottom:1px solid var(--line);}
 
-  .cell-btn{
+  .cell-wrap{position:relative;padding:3px;border-radius:11px;transition:box-shadow .15s ease;}
+  .cell-content{
     width:100%;
-    text-align:left;
     background:var(--paper);
     border:1.5px solid transparent;
-    border-radius:9px;
+    border-radius:var(--radius-s);
     padding:9px 10px;
     font-size:12.5px;
-    line-height:1.4;
+    line-height:1.45;
     color:var(--ink);
+    cursor:text;
+    min-height:38px;
+    outline:none;
+  }
+  .cell-content:hover{border-color:var(--line);}
+  .cell-content:focus{background:var(--white);border-color:var(--saffron);box-shadow:0 0 0 3px rgba(227,167,58,.15);}
+  .cell-content:empty:before{content:attr(data-placeholder);color:var(--ink-soft);font-style:italic;}
+  .cell-content.edited{border-left:2.5px solid var(--river);}
+  .cell-check{
+    display:flex; align-items:center; gap:6px;
+    margin-bottom:6px;
     cursor:pointer;
-    font-family:'Inter',sans-serif;
-    display:block;
-    transition:border-color .12s ease, background .12s ease;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:10px;
+    color:var(--ink-soft);
+    text-transform:uppercase;
+    letter-spacing:.04em;
+    user-select:none;
   }
-  .cell-btn .check{
-    display:inline-block;
-    width:14px;height:14px;
-    border-radius:50%;
+  .cell-check .dot{
+    width:13px;height:13px;border-radius:50%;
     border:1.5px solid var(--line);
-    margin-right:6px;
-    vertical-align:-2px;
+    flex:0 0 auto;
   }
-  .cell-btn.selected{background:var(--white);}
-  .cell-btn.selected .check{border-color:transparent;}
-  .cell-wrap{position:relative;}
-  .cell-edit{position:absolute;top:6px;right:6px;border:none;background:var(--white);border-radius:6px;padding:3px 6px;cursor:pointer;font-size:12px}
-  .edited-indicator{font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--river);margin-top:6px}
+  .cell-check.selected .dot{border-color:transparent;}
+  .cell-check.selected{color:var(--ink);font-weight:700;}
 
   /* ---------- STAYS & EATS ---------- */
-  .loc-tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;margin-bottom:16px;}
+  .loc-tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;margin-bottom:18px;}
   .loc-tab{
     flex:0 0 auto;
     border:1.5px solid var(--line);
@@ -222,56 +380,85 @@
   }
   .loc-tab.active{background:var(--pine);border-color:var(--pine);color:var(--white);}
 
+  .loc-banner{
+    position:relative;
+    border-radius:var(--radius-m);
+    overflow:hidden;
+    margin-bottom:20px;
+    background:var(--pine-deep);
+    min-height:100px;
+    box-shadow:var(--shadow-sm);
+  }
+  .loc-banner img{width:100%;height:160px;object-fit:cover;display:block;}
+  .loc-banner-caption{
+    position:absolute;left:0;bottom:0;right:0;
+    background:linear-gradient(0deg,rgba(15,32,26,.92),transparent);
+    color:var(--white);
+    padding:12px 15px 10px;
+  }
+  .loc-banner-caption .lbc-name{font-family:'Fraunces',serif;font-size:17px;font-weight:600;}
+  .loc-banner-caption .lbc-elev{font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:#B9D0BE;margin-top:2px;}
+
   .card-group-title{
     font-family:'IBM Plex Mono',monospace;
     font-size:11px;
     letter-spacing:.1em;
     text-transform:uppercase;
     color:var(--ink-soft);
-    margin:18px 0 10px;
+    margin:20px 0 10px;
   }
   .card-group-title:first-child{margin-top:0;}
-  .place-grid{display:grid;grid-template-columns:1fr;gap:10px;}
+  .place-grid{display:grid;grid-template-columns:1fr;gap:11px;}
   @media(min-width:600px){.place-grid{grid-template-columns:1fr 1fr;}}
 
   .place-card{
     background:var(--white);
-    border:1.5px solid var(--line);
-    border-radius:12px;
-    padding:13px 14px;
+    border:1px solid var(--line);
+    border-radius:var(--radius-m);
+    box-shadow:var(--shadow-sm);
+    padding:14px 15px;
     position:relative;
+    transition:border-color .12s ease, transform .12s ease;
   }
-  .place-card.fav{border-color:var(--saffron);background:#FFF8EA;}
+  .place-card.fav{border-color:var(--saffron);background:#FFF9EC;}
   .place-card .fav-btn{
-    position:absolute;top:10px;right:10px;
+    position:absolute;top:12px;right:12px;
     background:none;border:none;
     font-size:18px;cursor:pointer;
     color:var(--line);
     line-height:1;
   }
   .place-card.fav .fav-btn{color:var(--saffron);}
-  .place-name{font-weight:700;font-size:14px;padding-right:24px;line-height:1.3;}
+  .place-name{font-weight:700;font-size:14px;padding-right:24px;line-height:1.32;}
   .place-rating{
     font-family:'IBM Plex Mono',monospace;
     font-size:11.5px;
     color:var(--river);
-    margin:5px 0 7px;
+    margin:6px 0 7px;
   }
-  .place-note{font-size:12.5px;color:var(--ink-soft);line-height:1.45;}
-  .place-thumb{width:100%;height:120px;object-fit:cover;border-radius:8px;margin-bottom:8px;display:block}
-  .opt-color{width:28px;height:28px;border-radius:6px;border:1px solid var(--line);vertical-align:middle;margin-left:8px;cursor:pointer}
+  .place-note{font-size:12.5px;color:var(--ink-soft);line-height:1.48;}
+  .place-map-link{
+    display:inline-block;
+    margin-top:10px;
+    font-size:11.5px;
+    font-weight:600;
+    color:var(--pine);
+    text-decoration:none;
+    border-bottom:1.5px solid var(--saffron);
+  }
 
   /* ---------- SUMMARY ---------- */
   details.summary-box{
     background:var(--white);
-    border:1.5px solid var(--line);
-    border-radius:14px;
+    border:1px solid var(--line);
+    border-radius:var(--radius-m);
+    box-shadow:var(--shadow-sm);
     padding:4px 16px;
   }
   details.summary-box summary{
-    padding:14px 0;
+    padding:15px 0;
     font-family:'Fraunces',serif;
-    font-size:17px;
+    font-size:17.5px;
     font-weight:600;
     cursor:pointer;
     list-style:none;
@@ -299,7 +486,7 @@
     width:100%;
     min-height:80px;
     border:1.5px solid var(--line);
-    border-radius:10px;
+    border-radius:var(--radius-s);
     padding:10px;
     font-family:'Inter',sans-serif;
     font-size:13px;
@@ -315,24 +502,47 @@
     font-size:13px;
     font-weight:600;
     cursor:pointer;
-    font-family:'Inter',sans-serif;
   }
   .action-btn.primary{background:var(--pine);color:var(--white);}
   .action-btn.ghost{background:transparent;border:1.5px solid var(--line);color:var(--ink-soft);}
-  .toast{
-    font-size:12px;color:var(--river);
-    margin-top:8px;
-    font-family:'IBM Plex Mono',monospace;
-    height:14px;
-  }
+  .toast{font-size:12px;color:var(--river);margin-top:8px;font-family:'IBM Plex Mono',monospace;height:14px;}
+  .storage-note{font-size:11.5px;color:var(--ink-soft);margin-top:10px;font-family:'IBM Plex Mono',monospace;}
 
-  footer{
-    text-align:center;
-    font-size:12px;
-    color:var(--ink-soft);
-    padding:30px 18px 10px;
-    font-family:'IBM Plex Mono',monospace;
+  /* ---------- ADD ROW FORM ---------- */
+  .add-row-btn{
+    width:100%;
+    border:none;
+    background:transparent;
+    color:var(--river);
+    font-size:12.5px;
+    font-weight:600;
+    padding:10px 12px;
+    cursor:pointer;
+    text-align:left;
   }
+  .add-row-btn:hover{color:var(--pine);}
+  .add-row-form{padding:10px 12px 14px;background:var(--paper);}
+  .add-row-form input[type=text]{
+    width:100%;
+    border:1.5px solid var(--line);
+    border-radius:8px;
+    padding:8px 10px;
+    font-size:12.5px;
+    margin-bottom:8px;
+    font-family:'Inter',sans-serif;
+  }
+  .icon-select{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;}
+  .icon-opt{
+    border:1.5px solid var(--line);
+    background:var(--white);
+    border-radius:8px;
+    padding:5px 9px;
+    font-size:14px;
+    cursor:pointer;
+  }
+  .icon-opt.active{border-color:var(--saffron);background:#FFF3DC;}
+
+  footer{text-align:center;font-size:12px;color:var(--ink-soft);padding:32px 18px 10px;font-family:'IBM Plex Mono',monospace;}
 </style>
 </head>
 <body>
@@ -340,7 +550,7 @@
 <div class="hero">
   <span class="hero-eyebrow">Weekend escape · Fri night → Tue morning</span>
   <h1>Delhi → Parvati Valley</h1>
-  <p class="sub">Three route options, laid out side by side. Tap any box in the table to lock it into your plan, star the stays and cafés you like, and everything collects into one finalized itinerary at the bottom.</p>
+  <p class="sub">Three route options, laid out side by side. Tap a box to lock it into your plan, star the stays and cafés you like, and everything collects into one finalized itinerary at the bottom. Every part of this is editable — rename options, add your own days, drop in a stay we missed.</p>
   <div class="stat-row">
     <span><b>4 days</b> · Fri night–Tue AM</span>
     <span><b>3 routes</b> · Kasol · Tosh · Malana</span>
@@ -348,10 +558,8 @@
   </div>
   <div class="ridge-wrap">
     <svg class="ridge" viewBox="0 0 400 90" preserveAspectRatio="none">
-      <polyline points="0,90 0,68 40,50 70,60 110,20 150,45 190,15 230,42 270,25 310,55 350,35 400,60 400,90"
-        fill="#173229" stroke="none"/>
-      <polyline points="0,90 0,78 60,66 110,20 160,50 190,15 240,48 280,30 330,58 400,45 400,90"
-        fill="#0F241C" stroke="none" opacity="0.8"/>
+      <polyline points="0,90 0,68 40,50 70,60 110,20 150,45 190,15 230,42 270,25 310,55 350,35 400,60 400,90" fill="#173229" stroke="none"/>
+      <polyline points="0,90 0,78 60,66 110,20 160,50 190,15 240,48 280,30 330,58 400,45 400,90" fill="#0F241C" stroke="none" opacity="0.8"/>
       <circle cx="110" cy="20" r="2.4" fill="#E3A73A"/>
       <circle cx="190" cy="15" r="2.4" fill="#E3A73A"/>
       <text x="118" y="17" fill="#CFE0D6" font-family="IBM Plex Mono" font-size="7">Malana ~2650m</text>
@@ -363,12 +571,29 @@
 
 <section id="itinerarySection">
   <div class="section-head">
-    <span class="kicker">Compare</span>
-    <h2>Trip options</h2>
-    <p>Pick a whole route to start from, then override any single day if you want to mix and match.</p>
+    <span class="kicker">Compare · Editable</span>
+    <h2>Day by day, side by side</h2>
+    <p>Pick a whole route to start from, then override any single day. Add, rename, recolor or remove anything — it's your dashboard.</p>
   </div>
+
+  <div class="progress-card">
+    <span class="progress-text" id="progressText">0 of 0 moments locked in</span>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+    <span class="lean-chip" id="leanChip"></span>
+  </div>
+
+  <div class="day-jump" id="dayJump"></div>
+
+  <details class="manage-box" id="manageBox">
+    <summary>⚙ Manage route options <span class="arrow">▸</span></summary>
+    <div class="manage-body">
+      <div id="optManageList"></div>
+      <button class="add-option-btn" id="addOptionBtn">+ Add a new route option</button>
+    </div>
+  </details>
+
   <div class="quickpick-row" id="quickPicks"></div>
-  <div class="table-hint">← swipe sideways to compare all three options →</div>
+  <div class="table-hint">← swipe sideways to compare all options →</div>
   <div class="table-wrap">
     <table id="itinTable"></table>
   </div>
@@ -378,7 +603,7 @@
   <div class="section-head">
     <span class="kicker">Finalize</span>
     <h2>Stays &amp; cafés</h2>
-    <p>Real, currently-rated options along the route. Tap the star to shortlist one for your plan.</p>
+    <p>Real, currently-rated options along the route, each with a Google Maps link. Star to shortlist for your plan.</p>
   </div>
   <div class="loc-tabs" id="locTabs"></div>
   <div id="placeCards"></div>
@@ -402,228 +627,358 @@
       </div>
       <div class="action-row">
         <button class="action-btn primary" id="copyBtn">Copy plan as text</button>
-        <button class="action-btn ghost" id="resetBtn">Reset all selections</button>
+        <button class="action-btn ghost" id="resetBtn">Reset everything</button>
       </div>
       <div class="toast" id="toast"></div>
+      <div class="storage-note" id="storageNote"></div>
     </div>
   </details>
 </section>
 
-<footer>Built from a comparison of 3 Parvati Valley weekend itineraries · Ratings &amp; review counts from Google Places, current as of trip planning date</footer>
+<footer>Built from a comparison of 3 Parvati Valley weekend itineraries · Ratings &amp; review counts from Google Places · Location photos from Wikimedia Commons</footer>
 
 <script>
 (function(){
   "use strict";
 
-  var STORAGE_KEY = "parvati-trip-plan-v1";
+  var STORAGE_KEY = "parvati-trip-plan-v3";
+  var PALETTE = ["#4C8C8B","#E3A73A","#8B4B6B","#5C7A4A","#C1694F","#3B5A73"];
 
-  // transient map of current image index per place uid (not persisted)
-  var placeImageIndex = {};
+  var usingLocalFallback = (typeof window.storage === "undefined");
+  var storageBackend = usingLocalFallback ? {
+    get: function(key){
+      return new Promise(function(resolve, reject){
+        var v = localStorage.getItem(key);
+        if(v === null){ reject(new Error("not found")); return; }
+        resolve({key:key, value:v});
+      });
+    },
+    set: function(key, value){
+      return new Promise(function(resolve){
+        localStorage.setItem(key, value);
+        resolve({key:key, value:value});
+      });
+    }
+  } : window.storage;
 
-  var OPTIONS = [
+  var BASE_OPTIONS = [
     {key:1, name:"Café & Village Hop", place:"Kasol + Tosh", vibe:"Relaxed pace", color:"#4C8C8B"},
     {key:2, name:"Adventure & Seclusion", place:"Kasol + Malana", vibe:"Deeper cultural trek", color:"#E3A73A"},
     {key:3, name:"All-In Valley Loop", place:"Kasol + Tosh + Malana", vibe:"Fast-paced, covers everything", color:"#8B4B6B"}
   ];
-  var BASE_OPTIONS = JSON.parse(JSON.stringify(OPTIONS));
 
   var ITINERARY = [
     { id:"fri", day:"Day 1 · Friday", time:"Night — Departure from Delhi", rows:[
-      {id:"fri-transport", label:"Route out of Delhi", ic:"🚌", text:[
-        "8 PM overnight Volvo/drive via NH-44, roughly 10 hrs to Kasol",
-        "Overnight departure toward Bhuntar / Kasol",
-        "Overnight drive/bus straight to the Malana trailhead via Jari"
-      ]}
+      {id:"fri-transport", label:"Route out of Delhi", ic:"🚌", text:{
+        1:"8 PM overnight Volvo/drive via NH-44, roughly 10 hrs to Kasol",
+        2:"Overnight departure toward Bhuntar / Kasol",
+        3:"Overnight drive/bus straight to the Malana trailhead via Jari"
+      }}
     ]},
     { id:"sat", day:"Day 2 · Saturday", time:"Morning → Night", rows:[
-      {id:"sat-morning", label:"Morning", ic:"🌄", text:[
-        "Arrive Kasol, check into a riverside stay",
-        "Dropped near Jari, 4x4 to the Malana Hydro stop, begin the 2–3 hr climb up",
-        "Early trek up to Malana straight from the trailhead"
-      ]},
-      {id:"sat-activity", label:"Afternoon / Evening", ic:"🥾", text:[
-        "Wander the pine forests along the Parvati River, graze the café scene",
-        "Explore the ancient village respectfully — no touching walls or temples",
-        "A few hours in Malana, hike back down by early afternoon"
-      ]},
-      {id:"sat-stay", label:"Overnight stay", ic:"🛏", text:[
-        "Riverside stay in Kasol",
-        "Local guesthouse just outside the Malana village boundary",
-        "Hotel in Kasol, relaxed evening dinner"
-      ]}
+      {id:"sat-morning", label:"Morning", ic:"🌄", text:{
+        1:"Arrive Kasol, check into a riverside stay",
+        2:"Dropped near Jari, 4x4 to the Malana Hydro stop, begin the 2–3 hr climb up",
+        3:"Early trek up to Malana straight from the trailhead"
+      }},
+      {id:"sat-activity", label:"Afternoon / Evening", ic:"🥾", text:{
+        1:"Wander the pine forests along the Parvati River, graze the café scene",
+        2:"Explore the ancient village respectfully — no touching walls or temples",
+        3:"A few hours in Malana, hike back down by early afternoon"
+      }},
+      {id:"sat-stay", label:"Overnight stay", ic:"🛏", text:{
+        1:"Riverside stay in Kasol",
+        2:"Local guesthouse just outside the Malana village boundary",
+        3:"Hotel in Kasol, relaxed evening dinner"
+      }}
     ]},
     { id:"sun", day:"Day 3 · Sunday", time:"Morning → Night", rows:[
-      {id:"sun-morning", label:"Morning", ic:"🚕", text:[
-        "Cab to Barshaini, about 1 hr",
-        "Trek down to the cab point, head into Kasol",
-        "Early start from Kasol to Barshaini"
-      ]},
-      {id:"sun-activity", label:"Day activity", ic:"🥾", text:[
-        "Scenic 1-hr hike up to Tosh village",
-        "Unwind riverside in Kasol, browse the flea markets",
-        "Hike to Tosh — waterfall cafés, upper trails, sunset over the valley"
-      ]},
-      {id:"sun-stay", label:"Overnight stay", ic:"🛏", text:[
-        "Tosh — panoramic peaks, quiet evening vibe",
-        "Kasol, riverside",
-        "Tosh — sunset views"
-      ]}
+      {id:"sun-morning", label:"Morning", ic:"🚕", text:{
+        1:"Cab to Barshaini, about 1 hr",
+        2:"Trek down to the cab point, head into Kasol",
+        3:"Early start from Kasol to Barshaini"
+      }},
+      {id:"sun-activity", label:"Day activity", ic:"🥾", text:{
+        1:"Scenic 1-hr hike up to Tosh village",
+        2:"Unwind riverside in Kasol, browse the flea markets",
+        3:"Hike to Tosh — waterfall cafés, upper trails, sunset over the valley"
+      }},
+      {id:"sun-stay", label:"Overnight stay", ic:"🛏", text:{
+        1:"Tosh — panoramic peaks, quiet evening vibe",
+        2:"Kasol, riverside",
+        3:"Tosh — sunset views"
+      }}
     ]},
     { id:"mon", day:"Day 4 · Monday", time:"Morning → Night", rows:[
-      {id:"mon-morning", label:"Morning", ic:"🌤", text:[
-        "Hike back down to Barshaini by midday",
-        "Day trip to Chalal — an easy 30-min flat walk over a suspension bridge",
-        "Back down to Kasol by late morning"
-      ]},
-      {id:"mon-activity", label:"Afternoon", ic:"♨️", text:[
-        "Manikaran hot springs, then last-minute shopping in Kasol",
-        "Chalal — a quieter alternative to the main town",
-        "Quick Chalal trek, or a riverside café until departure"
-      ]},
-      {id:"mon-depart", label:"Evening departure", ic:"🚌", text:[
-        "Overnight bus from Kasol bus stand, roughly 6–7 PM",
-        "Optional: stay Monday night, catch a later bus Tuesday evening instead",
-        "Evening departure back toward Delhi"
-      ]}
+      {id:"mon-morning", label:"Morning", ic:"🌤", text:{
+        1:"Hike back down to Barshaini by midday",
+        2:"Day trip to Chalal — an easy 30-min flat walk over a suspension bridge",
+        3:"Back down to Kasol by late morning"
+      }},
+      {id:"mon-activity", label:"Afternoon", ic:"♨️", text:{
+        1:"Manikaran hot springs, then last-minute shopping in Kasol",
+        2:"Chalal — a quieter alternative to the main town",
+        3:"Quick Chalal trek, or a riverside café until departure"
+      }},
+      {id:"mon-depart", label:"Evening departure", ic:"🌇", text:{
+        1:"Overnight bus from Kasol bus stand, roughly 6–7 PM",
+        2:"Optional: stay Monday night, catch a later bus Tuesday evening instead",
+        3:"Evening departure back toward Delhi"
+      }}
     ]},
     { id:"ret", day:"Return", time:"Arrival in Delhi", rows:[
-      {id:"ret-arrival", label:"Back home", ic:"🏠", text:[
-        "Tuesday, 6–8 AM",
-        "Tuesday or Wednesday morning, if you extended the stay",
-        "Tuesday morning — in time for the workday"
-      ]}
+      {id:"ret-arrival", label:"Back home", ic:"🏠", text:{
+        1:"Tuesday, 6–8 AM",
+        2:"Tuesday or Wednesday morning, if you extended the stay",
+        3:"Tuesday morning — in time for the workday"
+      }}
     ]}
   ];
 
+  function mapsUrl(name, placeId){
+    var q = encodeURIComponent(name);
+    return "https://www.google.com/maps/search/?api=1&query=" + q + (placeId ? ("&query_place_id=" + placeId) : "");
+  }
+
   var PLACES = {
-    kasol:{ label:"Kasol", stays:[
-        {name:"Moksha Riverside Resort & Spa", rating:4.4, reviews:1965, note:"Spa resort right on the Parvati River; spacious rooms with mountain views.", images:["https://upload.wikimedia.org/wikipedia/commons/2/2d/Kasol_river_view.jpg"]},
-        {name:"Royal Castle Kasol (SOHO Kasol)", rating:4.7, reviews:2414, note:"River-view rooms, in-house bar & restaurant, occasional live music."},
-        {name:"The Hillside Kasol", rating:4.7, reviews:811, note:"Hilltop perch with 360° valley views — expect a short uphill walk in."},
-        {name:"The Hosteller Kasol, Riverside", rating:4.8, reviews:3942, note:"Budget-friendly hostel right on the riverbank, lively common areas."}
+    kasol:{ label:"Kasol", elevation:"~1,580 m",
+      banner:"https://commons.wikimedia.org/wiki/Special:FilePath/Kasol_mountain_view.jpg?width=800",
+      stays:[
+        {name:"Moksha Riverside Resort & Spa", rating:4.4, reviews:1965, note:"Spa resort right on the Parvati River; spacious rooms with mountain views.", placeId:"ChIJoSK9KfJdBDkRah2RQ6kIvMg"},
+        {name:"Royal Castle Kasol (SOHO Kasol)", rating:4.7, reviews:2414, note:"River-view rooms, in-house bar & restaurant, occasional live music.", placeId:"ChIJGSkasCFdBDkR-HLseMyjYec"},
+        {name:"The Hillside Kasol", rating:4.7, reviews:811, note:"Hilltop perch with 360° valley views — expect a short uphill walk in.", placeId:"ChIJvRyPuOddBDkRody02eA2feA"},
+        {name:"The Hosteller Kasol, Riverside", rating:4.8, reviews:3942, note:"Budget-friendly hostel right on the riverbank, lively common areas.", placeId:"ChIJj6kiRr5dBDkR9hDF9rETINo"}
       ], eats:[
-        {name:"The Evergreen", rating:4.3, reviews:5998, note:"Kasol's best-known Israeli/breakfast café; indoor and riverside outdoor seating.", images:["https://upload.wikimedia.org/wikipedia/commons/2/2d/Kasol_river_view.jpg"]},
-        {name:"Offlimits Coffee Kasol", rating:4.4, reviews:2932, note:"Riverside coffee spot tucked just off the main market."},
-        {name:"Bistro Nirvana Kasol", rating:4.9, reviews:363, note:"Cozy all-day menu at the Zostel — veg, vegan and non-veg options."},
-        {name:"Chill Out Cafe, Chalal", rating:5.0, reviews:28, note:"Quiet riverside thali spot just across the Chalal suspension bridge."}
+        {name:"The Evergreen", rating:4.3, reviews:5998, note:"Kasol's best-known Israeli/breakfast café; indoor and riverside outdoor seating.", placeId:"ChIJD6UmcEJcBDkRfgMMS256SGY"},
+        {name:"Offlimits Coffee Kasol", rating:4.4, reviews:2932, note:"Riverside coffee spot tucked just off the main market.", placeId:"ChIJuWtNbs1dBDkRa_aPss8fZkI"},
+        {name:"Bistro Nirvana Kasol", rating:4.9, reviews:363, note:"Cozy all-day menu at the Zostel — veg, vegan and non-veg options.", placeId:"ChIJZ9DqQM1dBDkR5miL5KH3SF4"},
+        {name:"Chill Out Cafe, Chalal", rating:5.0, reviews:28, note:"Quiet riverside thali spot just across the Chalal suspension bridge.", placeId:"ChIJyVFoIABdBDkRevRPC7sIqIw"}
       ]},
-    tosh:{ label:"Tosh", stays:[
-        {name:"Vigyan Guest House", rating:5.0, reviews:115, note:"Family-run homestay with a big open balcony and home-cooked meals.", images:["https://upload.wikimedia.org/wikipedia/commons/6/69/Tosh_Village.jpg"]},
-        {name:"Rockstar Stay and Cafe", rating:4.9, reviews:57, note:"Snow-peak views right from the room and a genuinely warm host."},
-        {name:"Aman Resort at Tosh", rating:4.9, reviews:167, note:"Riverside cottages, often called one of the best-located stays in the village."},
-        {name:"StonedAge Café & Inn", rating:4.5, reviews:293, note:"Near Tosh waterfall; A-frame lofts and a well-loved kitchen."}
+    tosh:{ label:"Tosh", elevation:"~2,400 m",
+      banner:"https://commons.wikimedia.org/wiki/Special:FilePath/Tosh,parvati_valley.jpg?width=800",
+      stays:[
+        {name:"Vigyan Guest House", rating:5.0, reviews:115, note:"Family-run homestay with a big open balcony and home-cooked meals.", placeId:"ChIJFSnXeQBDBDkRQ3uqrk4xLGU"},
+        {name:"Rockstar Stay and Cafe", rating:4.9, reviews:57, note:"Snow-peak views right from the room and a genuinely warm host.", placeId:"ChIJk_eBRgtDBDkRALxIMzol5gM"},
+        {name:"Aman Resort at Tosh", rating:4.9, reviews:167, note:"Riverside cottages, often called one of the best-located stays in the village.", placeId:"ChIJHXXYSUJDBDkRidkHLGuVxRs"},
+        {name:"StonedAge Café & Inn", rating:4.5, reviews:293, note:"Near Tosh waterfall; A-frame lofts and a well-loved kitchen.", placeId:"ChIJtXkcR95DBDkRb-m-NX_juc0"}
       ], eats:[
-        {name:"Pink Floyd Cafe", rating:4.1, reviews:724, note:"Tosh's iconic viewpoint café — a short trek up and a wait for a table.", images:["https://upload.wikimedia.org/wikipedia/commons/6/69/Tosh_Village.jpg"]},
-        {name:"Om Parvati Cafe & Rooms", rating:4.9, reviews:75, note:"Wide menu, cozy ambience, attentive hosts."},
-        {name:"Café Kush", rating:4.8, reviews:161, note:"A short uphill walk rewarded with terrific mountain views and hearty food."}
+        {name:"Pink Floyd Cafe", rating:4.1, reviews:724, note:"Tosh's iconic viewpoint café — a short trek up and a wait for a table.", placeId:"ChIJU2sgZ-1DBDkRlbqiVagkFtI"},
+        {name:"Om Parvati Cafe & Rooms", rating:4.9, reviews:75, note:"Wide menu, cozy ambience, attentive hosts.", placeId:"ChIJi4Ff1rlDBDkR2cwyKnqOrlQ"},
+        {name:"Café Kush", rating:4.8, reviews:161, note:"A short uphill walk rewarded with terrific mountain views and hearty food.", placeId:"ChIJY2ShInhDBDkRKy9kuPjp72I"}
       ]},
-    malana:{ label:"Malana", stays:[
-      {name:"AYOYA Malana Resort — Shiva Cafe", rating:4.3, reviews:666, note:"Closest stay to the entrance, about 2 minutes from the trailhead.", images:["https://upload.wikimedia.org/wikipedia/commons/1/1c/Malana_village.jpg"]},
-        {name:"The MariZane Cottage", rating:4.9, reviews:48, note:"Steep climb, rewarded with valley views and a hands-on host."},
-        {name:"Cafe Rudra (Guest House)", rating:4.3, reviews:22, note:"Perched at the top of the village with waterfall sounds and clean rooms."},
-        {name:"Snow Moon Cafe & Resort", rating:4.6, reviews:41, note:"360° views and a well-known chill-out café scene."}
+    malana:{ label:"Malana", elevation:"~2,652 m",
+      banner:"https://commons.wikimedia.org/wiki/Special:FilePath/Sign_outside_Malana,_Himachal_Pradesh.jpg?width=800",
+      stays:[
+        {name:"AYOYA Malana Resort — Shiva Cafe", rating:4.3, reviews:666, note:"Closest stay to the entrance, about 2 minutes from the trailhead.", placeId:"ChIJ1-98-hteBDkR_-VXgFQ8VwE"},
+        {name:"The MariZane Cottage", rating:4.9, reviews:48, note:"Steep climb, rewarded with valley views and a hands-on host.", placeId:"ChIJa-7TCQlfBDkRUk8BQ_xbacI"},
+        {name:"Cafe Rudra (Guest House)", rating:4.3, reviews:22, note:"Perched at the top of the village with waterfall sounds and clean rooms.", placeId:"ChIJAQAA0CJeBDkRcaskBggCooA"},
+        {name:"Snow Moon Cafe & Resort", rating:4.6, reviews:41, note:"360° views and a well-known chill-out café scene.", placeId:"ChIJiaImMYNfBDkRflBPZA3ncaY"}
       ], eats:[]},
-    manikaran:{ label:"Manikaran", stays:[], eats:[
-        {name:"Gurudwara Manikaran Sahib", rating:4.7, reviews:48867, note:"Riverside Sikh shrine famous for its langar and hot-spring sanctum."},
-        {name:"Manikaran Hot Water Pool", rating:4.7, reviews:5745, note:"Natural geothermal springs, hot enough to cook rice, right by the temple complex."}
+    manikaran:{ label:"Manikaran", elevation:"~1,760 m",
+      banner:"https://commons.wikimedia.org/wiki/Special:FilePath/Manikaran.jpg?width=800",
+      stays:[], eats:[
+        {name:"Gurudwara Manikaran Sahib", rating:4.7, reviews:48867, note:"Riverside Sikh shrine famous for its langar and hot-spring sanctum.", placeId:"ChIJj5QQB-dcBDkRR5r2ZM8lKfU"},
+        {name:"Manikaran Hot Water Pool", rating:4.7, reviews:5745, note:"Natural geothermal springs, hot enough to cook rice, right by the temple complex.", placeId:"ChIJh1KjMOVcBDkRso39TscGOBM"}
       ]}
   };
 
-  var BANNERS = {
-    kasol: 'https://upload.wikimedia.org/wikipedia/commons/3/33/Kasol_mountain_view.jpg',
-    tosh: 'https://upload.wikimedia.org/wikipedia/commons/0/04/Tosh_parvati_valley.jpg',
-    malana: 'https://upload.wikimedia.org/wikipedia/commons/6/6f/Sign_outside_Malana%2C_Himachal_Pradesh.jpg',
-    manikaran: 'https://upload.wikimedia.org/wikipedia/commons/2/29/Manikaran.jpg'
-  };
+  var ICONS = ["🌄","🥾","🛏","🚌","♨️","🌇","🚕","🏠"];
 
-  var state = { rowSelections:{}, favorites:[], notes:"", optionHeaderOverrides:{}, optionColors:{} };
+  var state = {
+    rowSelections:{}, favorites:[], notes:"",
+    textOverrides:{}, optionHeaderOverrides:{}, optionColors:{},
+    customOptions:[], hiddenOptions:[],
+    customRows:{}, hiddenRows:[]
+  };
   var activeLoc = "kasol";
 
-  // ---------- storage ----------
-  async function loadState(){
-    try{
-      if(window.storage && window.storage.get){
-        var res = await window.storage.get(STORAGE_KEY, false);
-        if(res && res.value){
-          var parsed = JSON.parse(res.value);
-          state.rowSelections = parsed.rowSelections || {};
-          state.favorites = parsed.favorites || [];
-          state.notes = parsed.notes || "";
-          state.optionHeaderOverrides = parsed.optionHeaderOverrides || {};
-          state.optionColors = parsed.optionColors || {};
-          state.textOverrides = parsed.textOverrides || {};
-          state.customRows = parsed.customRows || {};
-          state.customOptions = parsed.customOptions || [];
-          if(state.customOptions && state.customOptions.length){
-            OPTIONS = BASE_OPTIONS.concat(state.customOptions);
-          }
-        }
-      } else {
-        var raw = localStorage.getItem(STORAGE_KEY);
-        if(raw){
-          var parsed = JSON.parse(raw);
-          state.rowSelections = parsed.rowSelections || {};
-          state.favorites = parsed.favorites || [];
-          state.notes = parsed.notes || "";
-          state.optionHeaderOverrides = parsed.optionHeaderOverrides || {};
-          state.optionColors = parsed.optionColors || {};
-        }
+  function loadState(){
+    return storageBackend.get(STORAGE_KEY, false).then(function(res){
+      if(res && res.value){
+        var parsed = JSON.parse(res.value);
+        for(var k in parsed){ state[k] = parsed[k]; }
+        state.customOptions = state.customOptions || [];
+        state.hiddenOptions = state.hiddenOptions || [];
+        state.customRows = state.customRows || {};
+        state.hiddenRows = state.hiddenRows || [];
+        state.optionColors = state.optionColors || {};
+        state.optionHeaderOverrides = state.optionHeaderOverrides || {};
+        state.textOverrides = state.textOverrides || {};
       }
-    }catch(e){ /* no saved state yet */ }
+    }).catch(function(){ /* first run */ });
   }
   var saveTimer = null;
   function saveState(){
     clearTimeout(saveTimer);
-    saveTimer = setTimeout(async function(){
-      var payload = JSON.stringify(state);
-      try{
-        if(window.storage && window.storage.set){
-          await window.storage.set(STORAGE_KEY, payload, false);
-        } else {
-          localStorage.setItem(STORAGE_KEY, payload);
-        }
-      }catch(e){ console.error("save failed", e); }
+    saveTimer = setTimeout(function(){
+      storageBackend.set(STORAGE_KEY, JSON.stringify(state), false).catch(function(e){ console.error("save failed", e); });
     }, 250);
   }
 
-  // ---------- helpers ----------
+  function allOptions(){ return BASE_OPTIONS.concat(state.customOptions); }
+  function visibleOptions(){ return allOptions().filter(function(o){ return state.hiddenOptions.indexOf(o.key) === -1; }); }
+  function effColor(key){ return state.optionColors[key] || (allOptions().filter(function(o){return o.key===key;})[0]||{}).color || "#888"; }
+  function effName(opt){ return state.optionHeaderOverrides[opt.key+"-name"] || opt.name; }
+  function effPlace(opt){ return state.optionHeaderOverrides[opt.key+"-place"] || (opt.place + (opt.vibe? " · "+opt.vibe : "")); }
+  function nextOptionKey(){ var keys = allOptions().map(function(o){return o.key;}).concat([0]); return Math.max.apply(null, keys) + 1; }
   function fmtReviews(n){ return n.toLocaleString(); }
   function placeUid(loc, name){ return loc + "::" + name; }
   function cellKey(rowId, optKey){ return rowId + "|" + optKey; }
-  function getCellText(rowId, optKey, fallback){
-    var k = cellKey(rowId,optKey);
-    return (state.textOverrides && state.textOverrides[k] !== undefined) ? state.textOverrides[k] : fallback;
+  function getCellText(rowId, optKey, defaultText){
+    var k = cellKey(rowId, optKey);
+    return (state.textOverrides[k] !== undefined) ? state.textOverrides[k] : (defaultText || "");
   }
-  function esc(s){ var d=document.createElement('div'); d.textContent = s==null? '': s; return d.innerHTML; }
-  function normalizeLabel(lbl){
-    if(!lbl) return lbl;
-    var l = lbl.toLowerCase();
-    if(l.indexOf('morning')!==-1) return 'Morning';
-    if(l.indexOf('afternoon')!==-1 || l.indexOf('evening')!==-1 || l.indexOf('day activity')!==-1) return 'Afternoon / Evening';
-    if(l.indexOf('night')!==-1 || l.indexOf('overnight')!==-1 || l.indexOf('departure')!==-1 || l.indexOf('stay')!==-1) return 'Night';
-    return lbl;
+  function esc(s){ var d = document.createElement("div"); d.textContent = s == null ? "" : s; return d.innerHTML; }
+  function groupRows(group){ var r = group.rows.slice(); if(state.customRows[group.id]) r = r.concat(state.customRows[group.id]); return r.filter(function(row){ return state.hiddenRows.indexOf(row.id) === -1; }); }
+
+  function armTwoTap(btn, label, confirmFn){
+    if(btn.getAttribute("data-armed") === "1"){ confirmFn(); return; }
+    btn.setAttribute("data-armed","1");
+    btn.classList.add("armed");
+    var orig = btn.textContent;
+    btn.textContent = "✓";
+    setTimeout(function(){ btn.removeAttribute("data-armed"); btn.classList.remove("armed"); btn.textContent = orig; }, 2500);
   }
 
-  // ---------- render: quick picks ----------
-  function effectiveColor(optKey){
-    return state.optionColors && state.optionColors[optKey] ? state.optionColors[optKey] : (OPTIONS.filter(function(o){return o.key===optKey;})[0]||{}).color;
+  // ---------- progress ----------
+  function renderProgress(){
+    var total = 0, filled = 0;
+    var counts = {};
+    ITINERARY.forEach(function(group){
+      groupRows(group).forEach(function(row){
+        total++;
+        var sel = state.rowSelections[row.id];
+        if(sel){ filled++; counts[sel] = (counts[sel]||0)+1; }
+      });
+    });
+    document.getElementById("progressText").textContent = filled + " of " + total + " moments locked in";
+    document.getElementById("progressFill").style.width = (total ? Math.round(filled/total*100) : 0) + "%";
+    var leanChip = document.getElementById("leanChip");
+    var bestKey = null, bestCount = 0;
+    Object.keys(counts).forEach(function(k){ if(counts[k] > bestCount){ bestCount = counts[k]; bestKey = parseInt(k,10); } });
+    if(bestKey && bestCount > 0){
+      var opt = allOptions().filter(function(o){return o.key===bestKey;})[0];
+      leanChip.innerHTML = "Leaning toward <b>" + esc(opt ? effName(opt) : "—") + "</b> (" + bestCount + ")";
+    } else {
+      leanChip.textContent = "";
+    }
   }
 
-  function mapsUrl(name){
-    return 'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(name);
+  // ---------- day jump ----------
+  function renderDayJump(){
+    var wrap = document.getElementById("dayJump");
+    wrap.innerHTML = "";
+    ITINERARY.forEach(function(group){
+      var btn = document.createElement("button");
+      btn.className = "day-jump-btn";
+      btn.textContent = group.day.split("·")[0].trim();
+      btn.onclick = function(){
+        var el = document.getElementById("group-"+group.id);
+        if(el) el.scrollIntoView({behavior:"smooth", block:"start"});
+      };
+      wrap.appendChild(btn);
+    });
   }
 
+  // ---------- manage options ----------
+  function renderManage(){
+    var list = document.getElementById("optManageList");
+    list.innerHTML = "";
+    allOptions().forEach(function(opt){
+      if(state.hiddenOptions.indexOf(opt.key) !== -1) return;
+      var row = document.createElement("div");
+      row.className = "manage-row";
+      var color = effColor(opt.key);
+
+      var swatchWrap = document.createElement("div");
+      swatchWrap.className = "swatch-wrap";
+      var swatchBtn = document.createElement("button");
+      swatchBtn.className = "swatch-btn";
+      swatchBtn.style.background = color;
+      swatchBtn.title = "Change color";
+      swatchWrap.appendChild(swatchBtn);
+      swatchBtn.onclick = function(){
+        var existing = swatchWrap.querySelector(".swatch-popover");
+        if(existing){ existing.remove(); return; }
+        var pop = document.createElement("div");
+        pop.className = "swatch-popover";
+        PALETTE.forEach(function(c){
+          var sw = document.createElement("button");
+          sw.className = "swatch-opt";
+          sw.style.background = c;
+          sw.onclick = function(){
+            state.optionColors[opt.key] = c;
+            saveState(); renderTable(); renderQuickPicks(); renderProgress();
+            swatchBtn.style.background = c;
+            pop.remove();
+          };
+          pop.appendChild(sw);
+        });
+        swatchWrap.appendChild(pop);
+      };
+      row.appendChild(swatchWrap);
+
+      var inputs = document.createElement("div");
+      inputs.className = "manage-inputs";
+      var nameInput = document.createElement("input");
+      nameInput.className = "opt-name-input";
+      nameInput.type = "text";
+      nameInput.value = effName(opt);
+      nameInput.addEventListener("input", function(){
+        state.optionHeaderOverrides[opt.key+"-name"] = nameInput.value;
+        saveState(); renderTable(); renderQuickPicks();
+      });
+      var placeInput = document.createElement("input");
+      placeInput.className = "opt-place-input";
+      placeInput.type = "text";
+      placeInput.value = effPlace(opt);
+      placeInput.addEventListener("input", function(){
+        state.optionHeaderOverrides[opt.key+"-place"] = placeInput.value;
+        saveState(); renderTable();
+      });
+      inputs.appendChild(nameInput);
+      inputs.appendChild(placeInput);
+      row.appendChild(inputs);
+
+      var delBtn = document.createElement("button");
+      delBtn.className = "manage-del";
+      delBtn.textContent = "✕";
+      delBtn.title = "Remove option";
+      delBtn.onclick = function(){
+        armTwoTap(delBtn, "Remove", function(){
+          state.hiddenOptions.push(opt.key);
+          Object.keys(state.rowSelections).forEach(function(r){ if(state.rowSelections[r]===opt.key) delete state.rowSelections[r]; });
+          saveState(); renderManage(); renderTable(); renderQuickPicks(); renderProgress(); renderSummary();
+        });
+      };
+      row.appendChild(delBtn);
+
+      list.appendChild(row);
+    });
+  }
+
+  document.getElementById("addOptionBtn").addEventListener("click", function(){
+    var key = nextOptionKey();
+    var color = PALETTE[(allOptions().length) % PALETTE.length];
+    var newOpt = { key:key, name:"New option", place:"", vibe:"", color:color };
+    state.customOptions.push(newOpt);
+    ITINERARY.forEach(function(group){
+      groupRows(group).forEach(function(row){ if(row.text[key] === undefined) row.text[key] = ""; });
+    });
+    saveState(); renderManage(); renderTable(); renderQuickPicks(); renderProgress();
+  });
+
+  // ---------- quick picks ----------
   function renderQuickPicks(){
     var wrap = document.getElementById("quickPicks");
     wrap.innerHTML = "";
-    OPTIONS.forEach(function(opt){
+    visibleOptions().forEach(function(opt){
       var btn = document.createElement("button");
       btn.className = "qp-btn";
-      var c = effectiveColor(opt.key);
-      btn.innerHTML = '<span class="qp-dot" style="background:'+c+'"></span> Use all of "'+(state.optionHeaderOverrides[opt.key+"-name"]||opt.name)+'"';
+      btn.innerHTML = '<span class="qp-dot" style="background:'+effColor(opt.key)+'"></span> Use all of "'+esc(effName(opt))+'"';
       btn.onclick = function(){
-        ITINERARY.forEach(function(g){ g.rows.forEach(function(r){ state.rowSelections[r.id] = opt.key; }); });
-        saveState(); renderTable(); renderSummary();
+        ITINERARY.forEach(function(g){ groupRows(g).forEach(function(r){ state.rowSelections[r.id] = opt.key; }); });
+        saveState(); renderTable(); renderProgress(); renderSummary();
       };
       wrap.appendChild(btn);
     });
@@ -632,104 +987,114 @@
     clearBtn.textContent = "Clear day picks";
     clearBtn.onclick = function(){
       state.rowSelections = {};
-      saveState(); renderTable(); renderSummary();
+      saveState(); renderTable(); renderProgress(); renderSummary();
     };
     wrap.appendChild(clearBtn);
   }
-  // ---------- render: table ----------
+
+  // ---------- table ----------
   function renderTable(){
     var table = document.getElementById("itinTable");
-    var visibleOptions = OPTIONS.filter(function(o){ return (state.hiddenOptions||[]).indexOf(o.key) === -1; });
+    var opts = visibleOptions();
     var html = "<thead><tr><th>Day / Slot</th>";
-    visibleOptions.forEach(function(opt){
-      var nameVal = state.optionHeaderOverrides[opt.key+"-name"] || opt.name;
-      var placeVal = state.optionHeaderOverrides[opt.key+"-place"] || (opt.place + ' · ' + opt.vibe);
-      var colorVal = effectiveColor(opt.key) || opt.color;
-      html += '<th class="opt-head">'
-        + '<div class="opt-bar" style="background:'+colorVal+'"></div>'
-        + '<div style="display:flex;align-items:center;gap:8px">'
-        + '<div class="opt-name" contenteditable="true" data-opt="'+opt.key+'" data-field="name">Option '+opt.key+' — '+esc(nameVal)+'</div>'
-        + '<input class="opt-color" type="color" data-opt="'+opt.key+'" value="'+colorVal+'">'
-        + '<button class="opt-del" data-opt="'+opt.key+'" title="Remove option">✕</button>'
-        + '</div>'
-        + '<div class="opt-place" contenteditable="true" data-opt="'+opt.key+'" data-field="place">'+esc(placeVal)+'</div>'
-        + '</th>';
+    opts.forEach(function(opt){
+      html += '<th class="opt-head"><div class="opt-bar" style="background:'+effColor(opt.key)+'"></div>'
+        + '<div class="opt-name-display">'+esc(effName(opt))+'</div>'
+        + '<div class="opt-place-display">'+esc(effPlace(opt))+'</div></th>';
     });
-    html += '<th style="width:92px;text-align:center;">'
-      + '<button id="addOptionBtn" class="qp-btn">+ Add option</button>'
-      + '</th>';
     html += "</tr></thead><tbody>";
 
     ITINERARY.forEach(function(group){
-      html += '<tr class="group-row"><td colspan="'+(visibleOptions.length+2)+'"><b>'+group.day+'</b>'+group.time+'</td></tr>';
-      var rows = (group.rows || []).slice();
-      if(state.customRows && state.customRows[group.id]) rows = rows.concat(state.customRows[group.id]);
-      rows.forEach(function(row){
-        if((state.hiddenRows||[]).indexOf(row.id)!==-1) return;
-        var displayLabel = normalizeLabel(row.label) || row.label;
-        html += '<tr><td class="row-label"><span class="ic">'+row.ic+'</span>'+esc(displayLabel)
-          + ' <button class="row-del" data-row="'+row.id+'" title="Delete row">✕</button>'
-          + '</td>';
-        visibleOptions.forEach(function(opt, idx){
+      html += '<tr class="group-row" id="group-'+group.id+'"><td colspan="'+(opts.length+1)+'"><b>'+esc(group.day)+'</b>'+esc(group.time)+'</td></tr>';
+      groupRows(group).forEach(function(row){
+        html += '<tr><td class="row-label"><div class="row-label-wrap"><span class="ic">'+row.ic+'</span>'+esc(row.label)
+          + '<button class="row-del" data-row="'+row.id+'" title="Delete">✕</button></div></td>';
+        opts.forEach(function(opt){
           var selected = state.rowSelections[row.id] === opt.key;
-          var colorVal = effectiveColor(opt.key) || opt.color;
-          var borderColor = selected ? colorVal : "transparent";
-          var txt = getCellText(row.id, opt.key, (row.text && row.text[idx]) ? row.text[idx] : '');
-          var edited = state.textOverrides && state.textOverrides[cellKey(row.id,opt.key)] !== undefined;
-          html += '<td class="opt-cell" data-row="'+row.id+'" data-opt="'+opt.key+'">'
-            + '<div class="cell-wrap">'
-            + '<span class="check" data-row="'+row.id+'" data-opt="'+opt.key+'" style="display:inline-block;width:14px;height:14px;border-radius:50%;border:1.5px solid var(--line);margin-right:6px;vertical-align:-2px;'+(selected?('background:'+colorVal+';border-color:'+colorVal):'')+'"></span>'
-            + '<div class="cell-content" contenteditable="true" data-row="'+row.id+'" data-opt="'+opt.key+'">'+esc(txt)+'</div>'
-            + (edited? '<div class="edited-indicator">edited</div>' : '')
+          var color = effColor(opt.key);
+          var defaultTxt = row.text[opt.key] || "";
+          var txt = getCellText(row.id, opt.key, defaultTxt);
+          var isEdited = state.textOverrides[cellKey(row.id, opt.key)] !== undefined;
+          var wrapStyle = selected ? (' style="box-shadow:inset 0 0 0 2px '+color+';border-radius:11px;"') : '';
+          html += '<td class="opt-cell"><div class="cell-wrap"'+wrapStyle+'>'
+            + '<div class="cell-check'+(selected?' selected':'')+'" data-row="'+row.id+'" data-opt="'+opt.key+'">'
+            + '<span class="dot" style="'+(selected? 'background:'+color+';border-color:'+color : '')+'"></span>'
+            + (selected ? 'Locked in' : 'Tap to lock')
+            + '</div>'
+            + '<div class="cell-content'+(isEdited?' edited':'')+'" contenteditable="true" data-placeholder="+ add details" data-row="'+row.id+'" data-opt="'+opt.key+'">'+esc(txt)+'</div>'
             + '</div></td>';
         });
-        html += '<td class="opt-cell"></td>';
-        html += '</tr>';
+        html += "</tr>";
       });
-      html += '<tr><td colspan="'+(visibleOptions.length+2)+'" style="padding:8px 12px;">'
-        + '<button class="qp-btn" data-group="'+group.id+'">+ Add row to '+group.day+'</button>'
-        + '</td></tr>';
+      html += '<tr><td colspan="'+(opts.length+1)+'" class="add-row-cell" data-group="'+group.id+'"><button class="add-row-btn" data-group="'+group.id+'">+ Add a moment to '+esc(group.day.split("·")[0].trim())+'</button></td></tr>';
     });
     html += "</tbody>";
     table.innerHTML = html;
 
-    // header listeners (name/place)
-    table.querySelectorAll(".opt-name, .opt-place").forEach(function(el){
-      el.addEventListener('blur', function(){
-        var optKey = el.getAttribute('data-opt');
-        var field = el.getAttribute('data-field');
-        var text = el.textContent.trim();
-        if(field === 'name') text = text.replace(/^Option\s+\d+\s+—\s*/, '');
-        state.optionHeaderOverrides[optKey+'-'+field] = text;
-        saveState(); renderQuickPicks(); renderSummary();
+    table.querySelectorAll(".cell-check").forEach(function(el){
+      el.addEventListener("click", function(){
+        var rowId = el.getAttribute("data-row");
+        var optKey = parseInt(el.getAttribute("data-opt"), 10);
+        if(state.rowSelections[rowId] === optKey){ delete state.rowSelections[rowId]; }
+        else{ state.rowSelections[rowId] = optKey; }
+        saveState(); renderTable(); renderProgress(); renderSummary();
       });
     });
-    table.querySelectorAll('.opt-color').forEach(function(inp){
-      inp.addEventListener('input', function(){
-        var optKey = parseInt(inp.getAttribute('data-opt'),10);
-        state.optionColors[optKey] = inp.value;
-        saveState(); renderTable(); renderQuickPicks(); renderSummary();
+    table.querySelectorAll(".cell-content").forEach(function(el){
+      el.addEventListener("blur", function(){
+        var rowId = el.getAttribute("data-row");
+        var optKey = parseInt(el.getAttribute("data-opt"), 10);
+        state.textOverrides[cellKey(rowId, optKey)] = el.textContent.trim();
+        saveState(); renderSummary();
+        el.classList.add("edited");
       });
     });
-    table.querySelectorAll('.opt-del').forEach(function(b){ b.addEventListener('click', function(){ var k=parseInt(b.getAttribute('data-opt'),10); if(!confirm('Remove this option? You can add it back later.')) return; state.hiddenOptions = state.hiddenOptions || []; state.hiddenOptions.push(k); Object.keys(state.rowSelections||{}).forEach(function(r){ if(state.rowSelections[r]===k) delete state.rowSelections[r]; }); saveState(); renderTable(); renderQuickPicks(); renderSummary(); }); });
-
-    // wire checks (select) and contenteditable save
-    table.querySelectorAll('.check').forEach(function(ch){ ch.addEventListener('click', function(e){ e.stopPropagation(); var rowId=ch.getAttribute('data-row'); var optKey=parseInt(ch.getAttribute('data-opt'),10); if(state.rowSelections[rowId]===optKey) delete state.rowSelections[rowId]; else state.rowSelections[rowId]=optKey; saveState(); renderTable(); renderSummary(); }); });
-    table.querySelectorAll('.cell-content').forEach(function(cc){ cc.addEventListener('blur', function(){ var rowId=cc.getAttribute('data-row'); var optKey=parseInt(cc.getAttribute('data-opt'),10); var v = cc.textContent.trim(); if(!state.textOverrides) state.textOverrides={}; state.textOverrides[cellKey(rowId,optKey)] = v; saveState(); renderSummary(); }); });
-
-    // add-row buttons
-    table.querySelectorAll('button[data-group]').forEach(function(b){ b.addEventListener('click', function(){ var groupId = b.getAttribute('data-group'); var time = prompt('Time of day (Morning / Afternoon / Evening / Night). Use exactly: Morning, Afternoon / Evening, Night', 'Morning'); if(!time) return; if(['Morning','Afternoon / Evening','Night'].indexOf(time)===-1){ if(time==='Afternoon' || time==='Evening') time='Afternoon / Evening'; } var label = prompt('Row label (short):', time); if(!label) label = time; var newRow = { id: groupId+'-custom-'+Date.now(), label: label, ic: time==='Morning'? '🌄' : (time==='Night'? '🌙' : '🌇'), text: [] }; for(var i=0;i<OPTIONS.length;i++) newRow.text.push(''); if(!state.customRows) state.customRows={}; state.customRows[groupId]=state.customRows[groupId]||[]; state.customRows[groupId].push(newRow); saveState(); renderTable(); renderSummary(); }); });
-
-    // add-option
-    var addOpt = document.getElementById('addOptionBtn');
-    if(addOpt){ addOpt.addEventListener('click', function(){ var nm = prompt('New option name (e.g. Quiet & Slow)'); if(!nm) return; var place = prompt('Place / short description (e.g. Kasol + Tosh)'); var nextKey = Math.max.apply(null, OPTIONS.map(function(o){return o.key;})) + 1; var opt = { key: nextKey, name: nm, place: place||'', vibe:'', color:'#888888' }; OPTIONS.push(opt); state.customOptions = state.customOptions || []; state.customOptions.push(opt); // extend text arrays for existing rows
-        ITINERARY.forEach(function(g){ g.rows.forEach(function(r){ r.text = r.text || []; r.text.push(''); }); if(state.customRows && state.customRows[g.id]) state.customRows[g.id].forEach(function(cr){ cr.text = cr.text || []; cr.text.push(''); }); }); saveState(); renderTable(); renderQuickPicks(); renderSummary(); }); }
-
-    // delete-row
-    table.querySelectorAll('.row-del').forEach(function(b){ b.addEventListener('click', function(){ var rid=b.getAttribute('data-row'); if(!confirm('Delete this row?')) return; state.hiddenRows = state.hiddenRows || []; state.hiddenRows.push(rid); saveState(); renderTable(); renderSummary(); }); });
+    table.querySelectorAll(".row-del").forEach(function(btn){
+      btn.addEventListener("click", function(e){
+        e.stopPropagation();
+        armTwoTap(btn, "Delete", function(){
+          state.hiddenRows.push(btn.getAttribute("data-row"));
+          saveState(); renderTable(); renderProgress(); renderSummary();
+        });
+      });
+    });
+    table.querySelectorAll(".add-row-btn").forEach(function(btn){
+      btn.addEventListener("click", function(){ openAddRowForm(btn.getAttribute("data-group")); });
+    });
   }
 
-  // ---------- render: places ----------
+  function openAddRowForm(groupId){
+    var cell = document.querySelector('.add-row-cell[data-group="'+groupId+'"]');
+    if(!cell) return;
+    var selectedIcon = ICONS[0];
+    cell.innerHTML = '<div class="add-row-form">'
+      + '<input type="text" class="new-row-label" placeholder="What is this moment? e.g. Sunset viewpoint">'
+      + '<div class="icon-select">' + ICONS.map(function(ic,i){ return '<button type="button" class="icon-opt'+(i===0?' active':'')+'" data-ic="'+ic+'">'+ic+'</button>'; }).join("") + '</div>'
+      + '<div class="cell-edit-actions" style="display:flex;gap:8px;">'
+      + '<button class="action-btn primary add-row-save">Add</button>'
+      + '<button class="action-btn ghost add-row-cancel">Cancel</button>'
+      + '</div></div>';
+    cell.querySelectorAll(".icon-opt").forEach(function(b){
+      b.addEventListener("click", function(){
+        cell.querySelectorAll(".icon-opt").forEach(function(x){ x.classList.remove("active"); });
+        b.classList.add("active");
+        selectedIcon = b.getAttribute("data-ic");
+      });
+    });
+    cell.querySelector(".add-row-save").addEventListener("click", function(){
+      var label = cell.querySelector(".new-row-label").value.trim();
+      if(!label) return;
+      var text = {};
+      visibleOptions().forEach(function(o){ text[o.key] = ""; });
+      var newRow = { id: groupId+"-custom-"+Date.now(), label:label, ic:selectedIcon, text:text };
+      state.customRows[groupId] = state.customRows[groupId] || [];
+      state.customRows[groupId].push(newRow);
+      saveState(); renderTable(); renderProgress(); renderSummary();
+    });
+    cell.querySelector(".add-row-cancel").addEventListener("click", function(){ renderTable(); });
+  }
+
+  // ---------- places ----------
   function renderLocTabs(){
     var wrap = document.getElementById("locTabs");
     wrap.innerHTML = "";
@@ -742,39 +1107,22 @@
     });
   }
 
-  function placeCard(loc, p, kind){
+  function placeCard(loc, p){
     var uid = placeUid(loc, p.name);
     var isFav = state.favorites.indexOf(uid) !== -1;
     var card = document.createElement("div");
     card.className = "place-card" + (isFav ? " fav" : "");
-    var images = (p.images && p.images.length) ? p.images.slice() : (BANNERS[loc] ? [BANNERS[loc]] : []);
-    var idx = placeImageIndex[uid] || 0;
-    if(idx < 0) idx = 0; if(idx >= images.length) idx = 0; placeImageIndex[uid] = idx;
-    var imgHtml = '';
-    if(images.length){
-      imgHtml = '<div class="place-thumb-wrap">'
-        + '<button class="img-prev" data-uid="'+uid+'">‹</button>'
-        + '<img class="place-thumb" src="'+images[idx]+'" alt="'+p.name+'" onerror="this.style.display=\'none\'">'
-        + '<button class="img-next" data-uid="'+uid+'">›</button>'
-        + '</div>';
-    }
-    var mapLink = mapsUrl(p.name + ' ' + PLACES[loc].label + ' Parvati Valley');
+    var mUrl = mapsUrl(p.name, p.placeId);
     card.innerHTML = '<button class="fav-btn">'+(isFav?'★':'☆')+'</button>'
-      + imgHtml
-      + '<div class="place-name">'+p.name+'</div>'
-      + (p.rating ? ('<div class="place-rating">★ '+p.rating.toFixed(1)+' · '+fmtReviews(p.reviews)+' reviews</div>') : '')
-      + '<div class="place-note">'+p.note+'</div>'
-      + '<a class="place-map-link" href="'+mapLink+'" target="_blank" rel="noopener">📍 View on Google Maps</a>';
+      + '<div class="place-name">'+esc(p.name)+'</div>'
+      + '<div class="place-rating">★ '+p.rating.toFixed(1)+' · '+fmtReviews(p.reviews)+' reviews</div>'
+      + '<div class="place-note">'+esc(p.note)+'</div>'
+      + '<a class="place-map-link" href="'+mUrl+'" target="_blank" rel="noopener">📍 View on Google Maps</a>';
     card.querySelector(".fav-btn").onclick = function(){
       var i = state.favorites.indexOf(uid);
       if(i === -1) state.favorites.push(uid); else state.favorites.splice(i,1);
       saveState(); renderPlaceCards(); renderSummary();
     };
-    // wire image prev/next
-    var prev = card.querySelector('.img-prev');
-    var next = card.querySelector('.img-next');
-    if(prev) prev.onclick = function(){ var u=this.getAttribute('data-uid'); var imgs = (p.images && p.images.length)?p.images:(BANNERS[loc]? [BANNERS[loc]]:[]); var cur = placeImageIndex[u]||0; cur = (cur-1+imgs.length)%imgs.length; placeImageIndex[u]=cur; renderPlaceCards(); };
-    if(next) next.onclick = function(){ var u=this.getAttribute('data-uid'); var imgs = (p.images && p.images.length)?p.images:(BANNERS[loc]? [BANNERS[loc]]:[]); var cur = placeImageIndex[u]||0; cur = (cur+1)%imgs.length; placeImageIndex[u]=cur; renderPlaceCards(); };
     return card;
   }
 
@@ -782,6 +1130,13 @@
     var wrap = document.getElementById("placeCards");
     wrap.innerHTML = "";
     var data = PLACES[activeLoc];
+
+    var banner = document.createElement("div");
+    banner.className = "loc-banner";
+    banner.innerHTML = '<img src="'+data.banner+'" alt="'+esc(data.label)+'" loading="lazy" onerror="this.parentNode.style.display=\'none\'">'
+      + '<div class="loc-banner-caption"><div class="lbc-name">'+esc(data.label)+'</div><div class="lbc-elev">'+esc(data.elevation)+' elevation</div></div>';
+    wrap.appendChild(banner);
+
     if(data.stays.length){
       var t1 = document.createElement("div");
       t1.className = "card-group-title";
@@ -789,7 +1144,7 @@
       wrap.appendChild(t1);
       var g1 = document.createElement("div");
       g1.className = "place-grid";
-      data.stays.forEach(function(p){ g1.appendChild(placeCard(activeLoc, p, "stay")); });
+      data.stays.forEach(function(p){ g1.appendChild(placeCard(activeLoc, p)); });
       wrap.appendChild(g1);
     }
     if(data.eats.length){
@@ -799,22 +1154,21 @@
       wrap.appendChild(t2);
       var g2 = document.createElement("div");
       g2.className = "place-grid";
-      data.eats.forEach(function(p){ g2.appendChild(placeCard(activeLoc, p, "eat")); });
+      data.eats.forEach(function(p){ g2.appendChild(placeCard(activeLoc, p)); });
       wrap.appendChild(g2);
     }
   }
 
-  // ---------- render: summary ----------
+  // ---------- summary ----------
   function renderSummary(){
     var itinWrap = document.getElementById("sumItinerary");
     var lines = [];
     ITINERARY.forEach(function(group){
-      group.rows.forEach(function(row){
+      groupRows(group).forEach(function(row){
         var picked = state.rowSelections[row.id];
         if(picked){
-          var opt = OPTIONS.filter(function(o){return o.key===picked;})[0];
-          var idx = OPTIONS.indexOf(opt);
-          lines.push('<div class="sum-line"><b>'+group.day.replace('Day ','D').replace(' · ',' · ')+' · '+row.label+':</b> '+row.text[idx]+'</div>');
+          var txt = getCellText(row.id, picked, row.text[picked] || "");
+          lines.push('<div class="sum-line"><b>'+esc(group.day)+' · '+esc(row.label)+':</b> '+esc(txt)+'</div>');
         }
       });
     });
@@ -826,24 +1180,26 @@
       ["stays","eats"].forEach(function(kind){
         PLACES[loc][kind].forEach(function(p){
           if(state.favorites.indexOf(placeUid(loc,p.name)) !== -1){
-            favLines.push('<div class="sum-line"><b>'+p.name+'</b> — '+PLACES[loc].label+'</div>');
+            favLines.push('<div class="sum-line"><b>'+esc(p.name)+'</b> — '+esc(PLACES[loc].label)+'</div>');
           }
         });
       });
     });
     placesWrap.innerHTML = favLines.length ? favLines.join("") : '<div class="sum-empty">No stays or cafés starred yet.</div>';
+
+    document.getElementById("storageNote").textContent = usingLocalFallback
+      ? "Saved in this browser only (localStorage) — each visitor keeps their own copy."
+      : "Saved to your private Claude workspace — it'll be here next time you open this.";
   }
 
-  // ---------- plan text export ----------
   function buildPlanText(){
     var out = ["DELHI → PARVATI VALLEY — MY PLAN", ""];
     ITINERARY.forEach(function(group){
-      group.rows.forEach(function(row){
+      groupRows(group).forEach(function(row){
         var picked = state.rowSelections[row.id];
         if(picked){
-          var opt = OPTIONS.filter(function(o){return o.key===picked;})[0];
-          var idx = OPTIONS.indexOf(opt);
-          out.push(group.day + " — " + row.label + ": " + row.text[idx]);
+          var txt = getCellText(row.id, picked, row.text[picked] || "");
+          out.push(group.day + " — " + row.label + ": " + txt);
         }
       });
     });
@@ -858,55 +1214,61 @@
         });
       });
     });
-    if(state.notes.trim()){
-      out.push("");
-      out.push("NOTES");
-      out.push(state.notes.trim());
-    }
+    if(state.notes.trim()){ out.push(""); out.push("NOTES"); out.push(state.notes.trim()); }
     return out.join("\n");
   }
 
-  // ---------- init ----------
-  async function init(){
-    await loadState();
+  function fullRender(){
+    renderProgress();
+    renderDayJump();
+    renderManage();
     renderQuickPicks();
     renderTable();
     renderLocTabs();
     renderPlaceCards();
     renderSummary();
+  }
 
-    var notesEl = document.getElementById("tripNotes");
-    notesEl.value = state.notes;
-    notesEl.addEventListener("input", function(){
-      state.notes = notesEl.value;
-      saveState();
-    });
+  function init(){
+    loadState().then(function(){
+      ITINERARY.forEach(function(group){
+        group.rows.forEach(function(row){
+          state.customOptions.forEach(function(o){ if(row.text[o.key] === undefined) row.text[o.key] = ""; });
+        });
+        (state.customRows[group.id]||[]).forEach(function(row){
+          allOptions().forEach(function(o){ if(row.text[o.key] === undefined) row.text[o.key] = ""; });
+        });
+      });
 
-    document.getElementById("copyBtn").addEventListener("click", async function(){
-      var text = buildPlanText();
-      var toast = document.getElementById("toast");
-      try{
-        await navigator.clipboard.writeText(text);
-        toast.textContent = "Copied to clipboard.";
-      }catch(e){
-        var ta = document.createElement("textarea");
-        ta.value = text;
-        ta.style.position = "fixed";
-        ta.style.opacity = "0";
-        document.body.appendChild(ta);
-        ta.select();
-        try{ document.execCommand("copy"); toast.textContent = "Copied to clipboard."; }
-        catch(e2){ toast.textContent = "Couldn't auto-copy — select the plan text manually."; }
-        document.body.removeChild(ta);
-      }
-      setTimeout(function(){ toast.textContent = ""; }, 3000);
-    });
+      fullRender();
 
-    document.getElementById("resetBtn").addEventListener("click", function(){
-      state = { rowSelections:{}, favorites:[], notes:"" };
-      saveState();
-      renderTable(); renderPlaceCards(); renderSummary();
-      notesEl.value = "";
+      var notesEl = document.getElementById("tripNotes");
+      notesEl.value = state.notes;
+      notesEl.addEventListener("input", function(){ state.notes = notesEl.value; saveState(); });
+
+      document.getElementById("copyBtn").addEventListener("click", function(){
+        var text = buildPlanText();
+        var toast = document.getElementById("toast");
+        function showCopied(){ toast.textContent = "Copied to clipboard."; setTimeout(function(){toast.textContent="";},3000); }
+        function fallbackCopy(){
+          var ta = document.createElement("textarea");
+          ta.value = text; ta.style.position="fixed"; ta.style.opacity="0";
+          document.body.appendChild(ta); ta.select();
+          try{ document.execCommand("copy"); showCopied(); }
+          catch(e){ toast.textContent = "Couldn't auto-copy — select the plan text manually."; setTimeout(function(){toast.textContent="";},3000); }
+          document.body.removeChild(ta);
+        }
+        if(navigator.clipboard && navigator.clipboard.writeText){
+          navigator.clipboard.writeText(text).then(showCopied).catch(fallbackCopy);
+        } else { fallbackCopy(); }
+      });
+
+      document.getElementById("resetBtn").addEventListener("click", function(){
+        state = { rowSelections:{}, favorites:[], notes:"", textOverrides:{}, optionHeaderOverrides:{}, optionColors:{}, customOptions:[], hiddenOptions:[], customRows:{}, hiddenRows:[] };
+        saveState();
+        fullRender();
+        notesEl.value = "";
+      });
     });
   }
 
