@@ -23,6 +23,8 @@
     --slateblue:#3B5A73;
     --line:#C9D1BE;
     --white:#FBFAF6;
+    --good:#4C8C6E;
+    --warn:#C1694F;
     --shadow-sm:0 1px 2px rgba(15,32,26,.06), 0 3px 10px rgba(15,32,26,.05);
     --shadow-md:0 2px 4px rgba(15,32,26,.07), 0 10px 24px rgba(15,32,26,.08);
     --radius-s:9px; --radius-m:14px; --radius-l:20px;
@@ -39,6 +41,7 @@
   h1,h2,h3{font-family:'Fraunces',serif;margin:0;}
   .mono{font-family:'IBM Plex Mono',monospace;}
   button{font-family:inherit;}
+  input,textarea{font-family:inherit;}
 
   /* ---------- HERO ---------- */
   .hero{
@@ -86,6 +89,70 @@
   .ridge{display:block;width:100%;height:auto;}
   .ridge-wrap{margin-top:10px;}
 
+  /* ---------- COLLAB BAR ---------- */
+  .collab-wrap{max-width:940px;margin:0 auto;padding:0 18px;}
+  .collab-bar{
+    background:var(--white);
+    border:1px solid var(--line);
+    border-radius:var(--radius-m);
+    box-shadow:var(--shadow-sm);
+    padding:13px 16px;
+    margin-top:-20px;
+    position:relative;
+    z-index:4;
+    display:flex;
+    align-items:center;
+    gap:14px;
+    flex-wrap:wrap;
+  }
+  .collab-status{display:flex;align-items:center;gap:7px;font-size:12.5px;font-weight:600;white-space:nowrap;}
+  .collab-dot{width:8px;height:8px;border-radius:50%;background:var(--ink-soft);flex:0 0 auto;}
+  .collab-dot.local{background:#9AA593;}
+  .collab-dot.connecting{background:var(--saffron);animation:pulse 1.2s infinite;}
+  .collab-dot.live{background:var(--good);}
+  .collab-dot.error{background:var(--warn);}
+  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.35;}}
+  .collab-code{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11.5px;
+    background:var(--paper);
+    padding:5px 9px;
+    border-radius:7px;
+    color:var(--ink-soft);
+  }
+  .collab-share-btn{
+    border:1.5px solid var(--line);
+    background:var(--white);
+    border-radius:999px;
+    padding:7px 13px;
+    font-size:12.5px;
+    font-weight:600;
+    color:var(--ink);
+    cursor:pointer;
+  }
+  .collab-share-btn:hover{border-color:var(--pine);}
+  .collab-name-field{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--ink-soft);margin-left:auto;}
+  .collab-name-field input{
+    border:1.5px solid var(--line);
+    border-radius:7px;
+    padding:6px 9px;
+    font-size:12.5px;
+    width:110px;
+    color:var(--ink);
+  }
+  .collab-name-field input:focus{outline:none;border-color:var(--saffron);}
+  .presence-list{display:flex;gap:5px;flex-wrap:wrap;width:100%;order:9;}
+  .presence-pill{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:10.5px;
+    background:var(--paper);
+    color:var(--pine);
+    padding:3px 8px;
+    border-radius:999px;
+  }
+  .collab-note{font-size:11.5px;color:var(--ink-soft);width:100%;order:10;line-height:1.5;}
+  .collab-note a{color:var(--river);}
+
   /* ---------- SECTION SHELL ---------- */
   section{padding:38px 18px 6px;max-width:940px;margin:0 auto;}
   .section-head{margin-bottom:18px;}
@@ -127,6 +194,13 @@
     white-space:nowrap;
   }
   .lean-chip b{color:var(--ink);}
+  .save-status{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:10.5px;
+    color:var(--ink-soft);
+    white-space:nowrap;
+    margin-left:auto;
+  }
 
   /* ---------- DAY JUMP ---------- */
   .day-jump{display:flex;gap:7px;overflow-x:auto;margin-bottom:16px;padding-bottom:2px;}
@@ -180,7 +254,6 @@
   .manage-inputs input{
     border:1px solid transparent;
     background:transparent;
-    font-family:'Inter',sans-serif;
     color:var(--ink);
     padding:3px 4px;
     border-radius:5px;
@@ -488,7 +561,6 @@
     border:1.5px solid var(--line);
     border-radius:var(--radius-s);
     padding:10px;
-    font-family:'Inter',sans-serif;
     font-size:13px;
     color:var(--ink);
     resize:vertical;
@@ -505,6 +577,7 @@
   }
   .action-btn.primary{background:var(--pine);color:var(--white);}
   .action-btn.ghost{background:transparent;border:1.5px solid var(--line);color:var(--ink-soft);}
+  .action-btn.ghost.armed{background:var(--clay);color:var(--white);border-color:var(--clay);}
   .toast{font-size:12px;color:var(--river);margin-top:8px;font-family:'IBM Plex Mono',monospace;height:14px;}
   .storage-note{font-size:11.5px;color:var(--ink-soft);margin-top:10px;font-family:'IBM Plex Mono',monospace;}
 
@@ -529,7 +602,6 @@
     padding:8px 10px;
     font-size:12.5px;
     margin-bottom:8px;
-    font-family:'Inter',sans-serif;
   }
   .icon-select{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;}
   .icon-opt{
@@ -550,7 +622,7 @@
 <div class="hero">
   <span class="hero-eyebrow">Weekend escape · Fri night → Tue morning</span>
   <h1>Delhi → Parvati Valley</h1>
-  <p class="sub">Three route options, laid out side by side. Tap a box to lock it into your plan, star the stays and cafés you like, and everything collects into one finalized itinerary at the bottom. Every part of this is editable — rename options, add your own days, drop in a stay we missed.</p>
+  <p class="sub">Three route options, laid out side by side. Tap a box to lock it into your plan, star the stays and cafés you like, and everything collects into one finalized itinerary at the bottom. Share the link below and plan it together, live.</p>
   <div class="stat-row">
     <span><b>4 days</b> · Fri night–Tue AM</span>
     <span><b>3 routes</b> · Kasol · Tosh · Malana</span>
@@ -569,6 +641,17 @@
   </div>
 </div>
 
+<div class="collab-wrap">
+  <div class="collab-bar" id="collabBar">
+    <span class="collab-status"><span class="collab-dot local" id="collabDot"></span><span id="collabStatusText">Checking…</span></span>
+    <span class="collab-code" id="collabCode"></span>
+    <button class="collab-share-btn" id="shareBtn">🔗 Copy invite link</button>
+    <span class="collab-name-field"><span>You're:</span><input type="text" id="userNameInput" maxlength="24" placeholder="Guest"></span>
+    <div class="presence-list" id="presenceList"></div>
+    <div class="collab-note" id="collabNote"></div>
+  </div>
+</div>
+
 <section id="itinerarySection">
   <div class="section-head">
     <span class="kicker">Compare · Editable</span>
@@ -580,6 +663,7 @@
     <span class="progress-text" id="progressText">0 of 0 moments locked in</span>
     <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
     <span class="lean-chip" id="leanChip"></span>
+    <span class="save-status" id="saveStatus"></span>
   </div>
 
   <div class="day-jump" id="dayJump"></div>
@@ -627,7 +711,7 @@
       </div>
       <div class="action-row">
         <button class="action-btn primary" id="copyBtn">Copy plan as text</button>
-        <button class="action-btn ghost" id="resetBtn">Reset everything</button>
+        <button class="action-btn ghost" id="resetBtn">Reset everything (tap twice)</button>
       </div>
       <div class="toast" id="toast"></div>
       <div class="storage-note" id="storageNote"></div>
@@ -637,11 +721,35 @@
 
 <footer>Built from a comparison of 3 Parvati Valley weekend itineraries · Ratings &amp; review counts from Google Places · Location photos from Wikimedia Commons</footer>
 
+<!-- Firebase compat SDK — only used if FIREBASE_CONFIG below is filled in. Harmless if left as placeholders. -->
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-database-compat.js"></script>
+
 <script>
 (function(){
   "use strict";
 
-  var STORAGE_KEY = "parvati-trip-plan-v3";
+  // =====================================================================
+  // COLLABORATIVE MODE — paste your Firebase project config below to turn
+  // on live multi-user sync. Leave the placeholders as-is to keep this
+  // planner working solo (saved to this browser / your Claude workspace
+  // only). Full setup steps are in the separate implementation guide.
+  // =====================================================================
+  var FIREBASE_CONFIG = {
+    apiKey: "AIzaSyD9guRqpHbDnh2sbOsjIlzKUlvyn_0cVDY",
+    authDomain: "trip-plan-96971.firebaseapp.com",
+    databaseURL: "https://trip-plan-96971-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "trip-plan-96971",
+    storageBucket: "trip-plan-96971.firebasestorage.app",
+    messagingSenderId: "699931910920",
+    appId: "1:699931910920:web:0e773acb0cc49ca75302bd",
+    measurementId: "G-96P3WWBE20"
+  };
+
+  // =====================================================================
+
+  var STORAGE_KEY = "parvati-trip-plan-v4";
   var PALETTE = ["#4C8C8B","#E3A73A","#8B4B6B","#5C7A4A","#C1694F","#3B5A73"];
 
   var usingLocalFallback = (typeof window.storage === "undefined");
@@ -784,43 +892,17 @@
 
   var ICONS = ["🌄","🥾","🛏","🚌","♨️","🌇","🚕","🏠"];
 
+  // ---------- state (map-shaped throughout so it syncs cleanly with Firebase) ----------
   var state = {
-    rowSelections:{}, favorites:[], notes:"",
+    rowSelections:{}, favorites:{}, notes:"",
     textOverrides:{}, optionHeaderOverrides:{}, optionColors:{},
-    customOptions:[], hiddenOptions:[],
-    customRows:{}, hiddenRows:[]
+    customOptions:{}, hiddenOptions:{},
+    customRows:{}, hiddenRows:{}
   };
   var activeLoc = "kasol";
 
-  function loadState(){
-    return storageBackend.get(STORAGE_KEY, false).then(function(res){
-      if(res && res.value){
-        var parsed = JSON.parse(res.value);
-        for(var k in parsed){ state[k] = parsed[k]; }
-        state.customOptions = state.customOptions || [];
-        state.hiddenOptions = state.hiddenOptions || [];
-        state.customRows = state.customRows || {};
-        state.hiddenRows = state.hiddenRows || [];
-        state.optionColors = state.optionColors || {};
-        state.optionHeaderOverrides = state.optionHeaderOverrides || {};
-        state.textOverrides = state.textOverrides || {};
-      }
-    }).catch(function(){ /* first run */ });
-  }
-  var saveTimer = null;
-  function saveState(){
-    clearTimeout(saveTimer);
-    saveTimer = setTimeout(function(){
-      storageBackend.set(STORAGE_KEY, JSON.stringify(state), false).catch(function(e){ console.error("save failed", e); });
-    }, 250);
-  }
-
-  function allOptions(){ return BASE_OPTIONS.concat(state.customOptions); }
-  function visibleOptions(){ return allOptions().filter(function(o){ return state.hiddenOptions.indexOf(o.key) === -1; }); }
-  function effColor(key){ return state.optionColors[key] || (allOptions().filter(function(o){return o.key===key;})[0]||{}).color || "#888"; }
-  function effName(opt){ return state.optionHeaderOverrides[opt.key+"-name"] || opt.name; }
-  function effPlace(opt){ return state.optionHeaderOverrides[opt.key+"-place"] || (opt.place + (opt.vibe? " · "+opt.vibe : "")); }
-  function nextOptionKey(){ var keys = allOptions().map(function(o){return o.key;}).concat([0]); return Math.max.apply(null, keys) + 1; }
+  function esc(s){ var d = document.createElement("div"); d.textContent = s == null ? "" : s; return d.innerHTML; }
+  function fbSafeKey(s){ return String(s).replace(/[.#$\[\]\/]/g, "_"); }
   function fmtReviews(n){ return n.toLocaleString(); }
   function placeUid(loc, name){ return loc + "::" + name; }
   function cellKey(rowId, optKey){ return rowId + "|" + optKey; }
@@ -828,22 +910,193 @@
     var k = cellKey(rowId, optKey);
     return (state.textOverrides[k] !== undefined) ? state.textOverrides[k] : (defaultText || "");
   }
-  function esc(s){ var d = document.createElement("div"); d.textContent = s == null ? "" : s; return d.innerHTML; }
-  function groupRows(group){ var r = group.rows.slice(); if(state.customRows[group.id]) r = r.concat(state.customRows[group.id]); return r.filter(function(row){ return state.hiddenRows.indexOf(row.id) === -1; }); }
-
-  function armTwoTap(btn, label, confirmFn){
+  function allOptions(){
+    var arr = BASE_OPTIONS.slice();
+    Object.keys(state.customOptions).forEach(function(k){ arr.push(state.customOptions[k]); });
+    return arr;
+  }
+  function visibleOptions(){ return allOptions().filter(function(o){ return !state.hiddenOptions[o.key]; }); }
+  function effColor(key){ return state.optionColors[key] || (allOptions().filter(function(o){return o.key===key;})[0]||{}).color || "#888"; }
+  function effName(opt){ return state.optionHeaderOverrides[opt.key+"-name"] || opt.name; }
+  function effPlace(opt){ return state.optionHeaderOverrides[opt.key+"-place"] || (opt.place + (opt.vibe? " · "+opt.vibe : "")); }
+  function nextOptionKey(){ var keys = allOptions().map(function(o){return o.key;}).concat([0]); return Math.max.apply(null, keys) + 1; }
+  function groupRows(group){
+    var r = group.rows.slice();
+    var extra = state.customRows[group.id] || {};
+    Object.keys(extra).forEach(function(rid){ r.push(extra[rid]); });
+    return r.filter(function(row){ return !state.hiddenRows[row.id]; });
+  }
+  function normalizeRowTextKeys(){
+    var opts = allOptions();
+    ITINERARY.forEach(function(group){
+      group.rows.forEach(function(row){
+        opts.forEach(function(o){ if(row.text[o.key] === undefined) row.text[o.key] = ""; });
+      });
+      var extra = state.customRows[group.id] || {};
+      Object.keys(extra).forEach(function(rid){
+        opts.forEach(function(o){ if(extra[rid].text[o.key] === undefined) extra[rid].text[o.key] = ""; });
+      });
+    });
+  }
+  function armTwoTap(btn, confirmFn){
     if(btn.getAttribute("data-armed") === "1"){ confirmFn(); return; }
     btn.setAttribute("data-armed","1");
     btn.classList.add("armed");
     var orig = btn.textContent;
-    btn.textContent = "✓";
+    btn.textContent = "✓ Sure?";
     setTimeout(function(){ btn.removeAttribute("data-armed"); btn.classList.remove("armed"); btn.textContent = orig; }, 2500);
   }
 
+  // ---------- local personal-backup persistence (window.storage / localStorage) ----------
+  function loadLocalState(){
+    return storageBackend.get(STORAGE_KEY, false).then(function(res){
+      if(res && res.value){
+        var parsed = JSON.parse(res.value);
+        for(var k in parsed){ state[k] = parsed[k]; }
+      }
+    }).catch(function(){ /* first run */ });
+  }
+  var saveTimer = null;
+  function setSaveStatus(text){ var el = document.getElementById("saveStatus"); if(el) el.textContent = text; }
+  function persistLocal(attempt){
+    attempt = attempt || 0;
+    setSaveStatus(attempt === 0 ? "Saving…" : "Retrying save…");
+    storageBackend.set(STORAGE_KEY, JSON.stringify(state), false).then(function(){
+      setSaveStatus("Saved");
+      setTimeout(function(){ if(document.getElementById("saveStatus").textContent === "Saved") setSaveStatus(""); }, 2000);
+    }).catch(function(e){
+      console.warn("local save attempt failed", attempt, e);
+      if(attempt < 2){ setTimeout(function(){ persistLocal(attempt+1); }, 1200*(attempt+1)); }
+      else{ setSaveStatus("Couldn't save locally — will retry on your next edit"); }
+    });
+  }
+  function saveState(){
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(function(){ persistLocal(0); }, 400);
+  }
+
+  // ---------- Firebase collaborative layer ----------
+  var firebaseReady = false, db = null, tripId = null, isApplyingRemote = false;
+  var typingDepth = 0, pendingRender = false;
+
+  function isFirebaseConfigured(){
+    return FIREBASE_CONFIG && FIREBASE_CONFIG.apiKey && FIREBASE_CONFIG.apiKey.indexOf("PASTE_") !== 0
+      && FIREBASE_CONFIG.databaseURL && FIREBASE_CONFIG.databaseURL.indexOf("PASTE_") !== 0;
+  }
+  function setCollabStatus(mode, text){
+    var dot = document.getElementById("collabDot");
+    var txt = document.getElementById("collabStatusText");
+    if(dot) dot.className = "collab-dot " + mode;
+    if(txt) txt.textContent = text;
+  }
+  function resolveTripId(){
+    var params = new URLSearchParams(window.location.search);
+    var id = params.get("trip");
+    if(!id){
+      id = Math.random().toString(36).slice(2,8);
+      params.set("trip", id);
+      window.history.replaceState({}, "", window.location.pathname + "?" + params.toString());
+    }
+    return id;
+  }
+  function fbUpdate(pathObj){
+    if(!(firebaseReady && db) || isApplyingRemote) return;
+    db.ref("trips/"+tripId).update(pathObj).catch(function(e){
+      console.error("collab sync failed", e);
+      setCollabStatus("error", "Sync error — retrying on next edit");
+    });
+  }
+  function fbPath(key, value){ var o = {}; o[key] = value; return o; }
+
+  function mergeRemoteState(val){
+    val = val || {};
+    state.rowSelections = val.rowSelections || {};
+    state.favorites = val.favorites || {};
+    state.notes = (typeof val.notes === "string") ? val.notes : state.notes;
+    state.textOverrides = val.textOverrides || {};
+    state.optionHeaderOverrides = val.optionHeaderOverrides || {};
+    state.optionColors = val.optionColors || {};
+    state.customOptions = val.customOptions || {};
+    state.hiddenOptions = val.hiddenOptions || {};
+    state.customRows = val.customRows || {};
+    state.hiddenRows = val.hiddenRows || {};
+    normalizeRowTextKeys();
+  }
+
+  function renderPresence(presenceObj){
+    var wrap = document.getElementById("presenceList");
+    if(!wrap) return;
+    var names = Object.keys(presenceObj||{}).map(function(k){ return (presenceObj[k] && presenceObj[k].name) || "Guest"; });
+    wrap.innerHTML = names.map(function(n){ return '<span class="presence-pill">● '+esc(n)+'</span>'; }).join("");
+  }
+
+  function initPresence(){
+    if(!(firebaseReady && db)) return;
+    var sessionId = sessionStorage.getItem("parvati-session-id");
+    if(!sessionId){ sessionId = Math.random().toString(36).slice(2,10); sessionStorage.setItem("parvati-session-id", sessionId); }
+    var presenceRef = db.ref("trips/"+tripId+"/presence/"+sessionId);
+    db.ref(".info/connected").on("value", function(snap){
+      if(snap.val() === true){
+        presenceRef.onDisconnect().remove();
+        presenceRef.set({ name: localStorage.getItem("parvati-user-name") || "Guest", at: Date.now() });
+      }
+    });
+    db.ref("trips/"+tripId+"/presence").on("value", function(snap){ renderPresence(snap.val()); });
+  }
+
+  function initFirebase(){
+    tripId = resolveTripId();
+    document.getElementById("collabCode").textContent = "Trip: " + tripId;
+    if(!isFirebaseConfigured()){
+      setCollabStatus("local", "Local only — see setup guide to go live");
+      document.getElementById("collabNote").innerHTML = "Not connected to a shared trip yet. Ask whoever's hosting this page to follow the implementation guide to turn on live sync.";
+      return Promise.resolve(false);
+    }
+    try{
+      firebase.initializeApp(FIREBASE_CONFIG);
+      setCollabStatus("connecting", "Connecting…");
+      return firebase.auth().signInAnonymously().then(function(){
+        db = firebase.database();
+        firebaseReady = true;
+        return true;
+      }).catch(function(e){
+        console.error("firebase auth failed", e);
+        setCollabStatus("error", "Couldn't connect — check setup");
+        return false;
+      });
+    }catch(e){
+      console.error("firebase init failed", e);
+      setCollabStatus("error", "Couldn't connect — check setup");
+      return Promise.resolve(false);
+    }
+  }
+
+  function attachRemoteListener(){
+    db.ref("trips/"+tripId).on("value", function(snap){
+      isApplyingRemote = true;
+      mergeRemoteState(snap.val());
+      isApplyingRemote = false;
+      if(typingDepth > 0){ pendingRender = true; } else { fullRender(); }
+      setCollabStatus("live", "Live — syncing with your group");
+    }, function(err){
+      console.error("listener error", err);
+      setCollabStatus("error", "Sync error — reload to retry");
+    });
+  }
+
+  document.addEventListener("focusin", function(e){
+    if(e.target.matches && e.target.matches("textarea, .cell-content, .opt-name-input, .opt-place-input, .new-row-label")) typingDepth++;
+  });
+  document.addEventListener("focusout", function(e){
+    if(e.target.matches && e.target.matches("textarea, .cell-content, .opt-name-input, .opt-place-input, .new-row-label")){
+      typingDepth = Math.max(0, typingDepth-1);
+      if(typingDepth === 0 && pendingRender){ pendingRender = false; fullRender(); }
+    }
+  });
+
   // ---------- progress ----------
   function renderProgress(){
-    var total = 0, filled = 0;
-    var counts = {};
+    var total = 0, filled = 0, counts = {};
     ITINERARY.forEach(function(group){
       groupRows(group).forEach(function(row){
         total++;
@@ -859,9 +1112,7 @@
     if(bestKey && bestCount > 0){
       var opt = allOptions().filter(function(o){return o.key===bestKey;})[0];
       leanChip.innerHTML = "Leaning toward <b>" + esc(opt ? effName(opt) : "—") + "</b> (" + bestCount + ")";
-    } else {
-      leanChip.textContent = "";
-    }
+    } else { leanChip.textContent = ""; }
   }
 
   // ---------- day jump ----------
@@ -872,10 +1123,7 @@
       var btn = document.createElement("button");
       btn.className = "day-jump-btn";
       btn.textContent = group.day.split("·")[0].trim();
-      btn.onclick = function(){
-        var el = document.getElementById("group-"+group.id);
-        if(el) el.scrollIntoView({behavior:"smooth", block:"start"});
-      };
+      btn.onclick = function(){ var el = document.getElementById("group-"+group.id); if(el) el.scrollIntoView({behavior:"smooth", block:"start"}); };
       wrap.appendChild(btn);
     });
   }
@@ -885,7 +1133,7 @@
     var list = document.getElementById("optManageList");
     list.innerHTML = "";
     allOptions().forEach(function(opt){
-      if(state.hiddenOptions.indexOf(opt.key) !== -1) return;
+      if(state.hiddenOptions[opt.key]) return;
       var row = document.createElement("div");
       row.className = "manage-row";
       var color = effColor(opt.key);
@@ -908,7 +1156,8 @@
           sw.style.background = c;
           sw.onclick = function(){
             state.optionColors[opt.key] = c;
-            saveState(); renderTable(); renderQuickPicks(); renderProgress();
+            saveState(); fbUpdate(fbPath("optionColors/"+opt.key, c));
+            renderTable(); renderQuickPicks(); renderProgress();
             swatchBtn.style.background = c;
             pop.remove();
           };
@@ -926,7 +1175,10 @@
       nameInput.value = effName(opt);
       nameInput.addEventListener("input", function(){
         state.optionHeaderOverrides[opt.key+"-name"] = nameInput.value;
-        saveState(); renderTable(); renderQuickPicks();
+        renderTable(); renderQuickPicks();
+      });
+      nameInput.addEventListener("blur", function(){
+        saveState(); fbUpdate(fbPath("optionHeaderOverrides/"+opt.key+"-name", nameInput.value));
       });
       var placeInput = document.createElement("input");
       placeInput.className = "opt-place-input";
@@ -934,7 +1186,10 @@
       placeInput.value = effPlace(opt);
       placeInput.addEventListener("input", function(){
         state.optionHeaderOverrides[opt.key+"-place"] = placeInput.value;
-        saveState(); renderTable();
+        renderTable();
+      });
+      placeInput.addEventListener("blur", function(){
+        saveState(); fbUpdate(fbPath("optionHeaderOverrides/"+opt.key+"-place", placeInput.value));
       });
       inputs.appendChild(nameInput);
       inputs.appendChild(placeInput);
@@ -945,14 +1200,17 @@
       delBtn.textContent = "✕";
       delBtn.title = "Remove option";
       delBtn.onclick = function(){
-        armTwoTap(delBtn, "Remove", function(){
-          state.hiddenOptions.push(opt.key);
-          Object.keys(state.rowSelections).forEach(function(r){ if(state.rowSelections[r]===opt.key) delete state.rowSelections[r]; });
-          saveState(); renderManage(); renderTable(); renderQuickPicks(); renderProgress(); renderSummary();
+        armTwoTap(delBtn, function(){
+          state.hiddenOptions[opt.key] = true;
+          var updates = {}; updates["hiddenOptions/"+opt.key] = true;
+          Object.keys(state.rowSelections).forEach(function(rid){
+            if(state.rowSelections[rid] === opt.key){ delete state.rowSelections[rid]; updates["rowSelections/"+rid] = null; }
+          });
+          saveState(); fbUpdate(updates);
+          renderManage(); renderTable(); renderQuickPicks(); renderProgress(); renderSummary();
         });
       };
       row.appendChild(delBtn);
-
       list.appendChild(row);
     });
   }
@@ -961,11 +1219,10 @@
     var key = nextOptionKey();
     var color = PALETTE[(allOptions().length) % PALETTE.length];
     var newOpt = { key:key, name:"New option", place:"", vibe:"", color:color };
-    state.customOptions.push(newOpt);
-    ITINERARY.forEach(function(group){
-      groupRows(group).forEach(function(row){ if(row.text[key] === undefined) row.text[key] = ""; });
-    });
-    saveState(); renderManage(); renderTable(); renderQuickPicks(); renderProgress();
+    state.customOptions[key] = newOpt;
+    normalizeRowTextKeys();
+    saveState(); fbUpdate(fbPath("customOptions/"+key, newOpt));
+    renderManage(); renderTable(); renderQuickPicks(); renderProgress();
   });
 
   // ---------- quick picks ----------
@@ -977,8 +1234,10 @@
       btn.className = "qp-btn";
       btn.innerHTML = '<span class="qp-dot" style="background:'+effColor(opt.key)+'"></span> Use all of "'+esc(effName(opt))+'"';
       btn.onclick = function(){
-        ITINERARY.forEach(function(g){ groupRows(g).forEach(function(r){ state.rowSelections[r.id] = opt.key; }); });
-        saveState(); renderTable(); renderProgress(); renderSummary();
+        var updates = {};
+        ITINERARY.forEach(function(g){ groupRows(g).forEach(function(r){ state.rowSelections[r.id] = opt.key; updates["rowSelections/"+r.id] = opt.key; }); });
+        saveState(); fbUpdate(updates);
+        renderTable(); renderProgress(); renderSummary();
       };
       wrap.appendChild(btn);
     });
@@ -986,8 +1245,11 @@
     clearBtn.className = "qp-btn qp-clear";
     clearBtn.textContent = "Clear day picks";
     clearBtn.onclick = function(){
+      var updates = {};
+      Object.keys(state.rowSelections).forEach(function(rid){ updates["rowSelections/"+rid] = null; });
       state.rowSelections = {};
-      saveState(); renderTable(); renderProgress(); renderSummary();
+      saveState(); fbUpdate(updates);
+      renderTable(); renderProgress(); renderSummary();
     };
     wrap.appendChild(clearBtn);
   }
@@ -1035,26 +1297,32 @@
       el.addEventListener("click", function(){
         var rowId = el.getAttribute("data-row");
         var optKey = parseInt(el.getAttribute("data-opt"), 10);
-        if(state.rowSelections[rowId] === optKey){ delete state.rowSelections[rowId]; }
-        else{ state.rowSelections[rowId] = optKey; }
-        saveState(); renderTable(); renderProgress(); renderSummary();
+        var upd = {};
+        if(state.rowSelections[rowId] === optKey){ delete state.rowSelections[rowId]; upd["rowSelections/"+rowId] = null; }
+        else{ state.rowSelections[rowId] = optKey; upd["rowSelections/"+rowId] = optKey; }
+        saveState(); fbUpdate(upd);
+        renderTable(); renderProgress(); renderSummary();
       });
     });
     table.querySelectorAll(".cell-content").forEach(function(el){
       el.addEventListener("blur", function(){
         var rowId = el.getAttribute("data-row");
         var optKey = parseInt(el.getAttribute("data-opt"), 10);
-        state.textOverrides[cellKey(rowId, optKey)] = el.textContent.trim();
-        saveState(); renderSummary();
+        var val = el.textContent.trim();
+        state.textOverrides[cellKey(rowId, optKey)] = val;
+        saveState(); fbUpdate(fbPath("textOverrides/"+fbSafeKey(cellKey(rowId,optKey)), val));
+        renderSummary();
         el.classList.add("edited");
       });
     });
     table.querySelectorAll(".row-del").forEach(function(btn){
       btn.addEventListener("click", function(e){
         e.stopPropagation();
-        armTwoTap(btn, "Delete", function(){
-          state.hiddenRows.push(btn.getAttribute("data-row"));
-          saveState(); renderTable(); renderProgress(); renderSummary();
+        armTwoTap(btn, function(){
+          var rid = btn.getAttribute("data-row");
+          state.hiddenRows[rid] = true;
+          saveState(); fbUpdate(fbPath("hiddenRows/"+rid, true));
+          renderTable(); renderProgress(); renderSummary();
         });
       });
     });
@@ -1086,10 +1354,12 @@
       if(!label) return;
       var text = {};
       visibleOptions().forEach(function(o){ text[o.key] = ""; });
-      var newRow = { id: groupId+"-custom-"+Date.now(), label:label, ic:selectedIcon, text:text };
-      state.customRows[groupId] = state.customRows[groupId] || [];
-      state.customRows[groupId].push(newRow);
-      saveState(); renderTable(); renderProgress(); renderSummary();
+      var rowId = groupId+"-custom-"+Date.now();
+      var newRow = { id: rowId, label:label, ic:selectedIcon, text:text };
+      state.customRows[groupId] = state.customRows[groupId] || {};
+      state.customRows[groupId][rowId] = newRow;
+      saveState(); fbUpdate(fbPath("customRows/"+groupId+"/"+rowId, newRow));
+      renderTable(); renderProgress(); renderSummary();
     });
     cell.querySelector(".add-row-cancel").addEventListener("click", function(){ renderTable(); });
   }
@@ -1109,7 +1379,7 @@
 
   function placeCard(loc, p){
     var uid = placeUid(loc, p.name);
-    var isFav = state.favorites.indexOf(uid) !== -1;
+    var isFav = !!state.favorites[uid];
     var card = document.createElement("div");
     card.className = "place-card" + (isFav ? " fav" : "");
     var mUrl = mapsUrl(p.name, p.placeId);
@@ -1119,8 +1389,9 @@
       + '<div class="place-note">'+esc(p.note)+'</div>'
       + '<a class="place-map-link" href="'+mUrl+'" target="_blank" rel="noopener">📍 View on Google Maps</a>';
     card.querySelector(".fav-btn").onclick = function(){
-      var i = state.favorites.indexOf(uid);
-      if(i === -1) state.favorites.push(uid); else state.favorites.splice(i,1);
+      var fk = fbSafeKey(uid);
+      if(state.favorites[uid]){ delete state.favorites[uid]; fbUpdate(fbPath("favorites/"+fk, null)); }
+      else { state.favorites[uid] = true; fbUpdate(fbPath("favorites/"+fk, true)); }
       saveState(); renderPlaceCards(); renderSummary();
     };
     return card;
@@ -1179,7 +1450,7 @@
     Object.keys(PLACES).forEach(function(loc){
       ["stays","eats"].forEach(function(kind){
         PLACES[loc][kind].forEach(function(p){
-          if(state.favorites.indexOf(placeUid(loc,p.name)) !== -1){
+          if(state.favorites[placeUid(loc,p.name)]){
             favLines.push('<div class="sum-line"><b>'+esc(p.name)+'</b> — '+esc(PLACES[loc].label)+'</div>');
           }
         });
@@ -1188,8 +1459,8 @@
     placesWrap.innerHTML = favLines.length ? favLines.join("") : '<div class="sum-empty">No stays or cafés starred yet.</div>';
 
     document.getElementById("storageNote").textContent = usingLocalFallback
-      ? "Saved in this browser only (localStorage) — each visitor keeps their own copy."
-      : "Saved to your private Claude workspace — it'll be here next time you open this.";
+      ? "Personal backup saved in this browser only (localStorage)."
+      : "Personal backup saved to your private Claude workspace.";
   }
 
   function buildPlanText(){
@@ -1208,9 +1479,7 @@
     Object.keys(PLACES).forEach(function(loc){
       ["stays","eats"].forEach(function(kind){
         PLACES[loc][kind].forEach(function(p){
-          if(state.favorites.indexOf(placeUid(loc,p.name)) !== -1){
-            out.push("- " + p.name + " (" + PLACES[loc].label + ")");
-          }
+          if(state.favorites[placeUid(loc,p.name)]){ out.push("- " + p.name + " (" + PLACES[loc].label + ")"); }
         });
       });
     });
@@ -1230,21 +1499,63 @@
   }
 
   function init(){
-    loadState().then(function(){
-      ITINERARY.forEach(function(group){
-        group.rows.forEach(function(row){
-          state.customOptions.forEach(function(o){ if(row.text[o.key] === undefined) row.text[o.key] = ""; });
-        });
-        (state.customRows[group.id]||[]).forEach(function(row){
-          allOptions().forEach(function(o){ if(row.text[o.key] === undefined) row.text[o.key] = ""; });
-        });
-      });
+    var nameInput = document.getElementById("userNameInput");
+    nameInput.value = localStorage.getItem("parvati-user-name") || "";
+    nameInput.addEventListener("blur", function(){
+      var n = nameInput.value.trim() || "Guest";
+      localStorage.setItem("parvati-user-name", n);
+      if(firebaseReady && db && tripId){
+        var sessionId = sessionStorage.getItem("parvati-session-id");
+        if(sessionId) db.ref("trips/"+tripId+"/presence/"+sessionId+"/name").set(n);
+      }
+    });
 
-      fullRender();
+    document.getElementById("shareBtn").addEventListener("click", function(){
+      var url = window.location.href;
+      var toastFn = function(){
+        var btn = document.getElementById("shareBtn");
+        var orig = btn.textContent;
+        btn.textContent = "✓ Copied!";
+        setTimeout(function(){ btn.textContent = orig; }, 1800);
+      };
+      if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(url).then(toastFn); }
+      else{
+        var ta = document.createElement("textarea");
+        ta.value = url; ta.style.position="fixed"; ta.style.opacity="0";
+        document.body.appendChild(ta); ta.select();
+        try{ document.execCommand("copy"); toastFn(); }catch(e){}
+        document.body.removeChild(ta);
+      }
+    });
 
+    initFirebase().then(function(connected){
+      if(connected){
+        return new Promise(function(resolve){
+          db.ref("trips/"+tripId).once("value").then(function(snap){
+            if(snap.exists()){
+              mergeRemoteState(snap.val());
+              resolve();
+            } else {
+              loadLocalState().then(function(){
+                normalizeRowTextKeys();
+                db.ref("trips/"+tripId).set(state).then(resolve).catch(resolve);
+              });
+            }
+          }).catch(function(){ resolve(); });
+        }).then(function(){
+          normalizeRowTextKeys();
+          fullRender();
+          attachRemoteListener();
+          initPresence();
+        });
+      } else {
+        return loadLocalState().then(function(){ normalizeRowTextKeys(); fullRender(); });
+      }
+    }).then(function(){
       var notesEl = document.getElementById("tripNotes");
       notesEl.value = state.notes;
-      notesEl.addEventListener("input", function(){ state.notes = notesEl.value; saveState(); });
+      notesEl.addEventListener("input", function(){ state.notes = notesEl.value; });
+      notesEl.addEventListener("blur", function(){ saveState(); fbUpdate(fbPath("notes", state.notes)); });
 
       document.getElementById("copyBtn").addEventListener("click", function(){
         var text = buildPlanText();
@@ -1258,16 +1569,18 @@
           catch(e){ toast.textContent = "Couldn't auto-copy — select the plan text manually."; setTimeout(function(){toast.textContent="";},3000); }
           document.body.removeChild(ta);
         }
-        if(navigator.clipboard && navigator.clipboard.writeText){
-          navigator.clipboard.writeText(text).then(showCopied).catch(fallbackCopy);
-        } else { fallbackCopy(); }
+        if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(text).then(showCopied).catch(fallbackCopy); }
+        else { fallbackCopy(); }
       });
 
       document.getElementById("resetBtn").addEventListener("click", function(){
-        state = { rowSelections:{}, favorites:[], notes:"", textOverrides:{}, optionHeaderOverrides:{}, optionColors:{}, customOptions:[], hiddenOptions:[], customRows:{}, hiddenRows:[] };
-        saveState();
-        fullRender();
-        notesEl.value = "";
+        armTwoTap(document.getElementById("resetBtn"), function(){
+          state = { rowSelections:{}, favorites:{}, notes:"", textOverrides:{}, optionHeaderOverrides:{}, optionColors:{}, customOptions:{}, hiddenOptions:{}, customRows:{}, hiddenRows:{} };
+          saveState();
+          if(firebaseReady && db){ db.ref("trips/"+tripId).set(state); }
+          fullRender();
+          notesEl.value = "";
+        });
       });
     });
   }
